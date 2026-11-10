@@ -1,4 +1,7 @@
+// ignore_for_file: deprecated_member_use, prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../model/date_format.dart';
 import '../model/medical_entry.dart';
 import '../model/user.dart';
@@ -38,7 +41,7 @@ class _AddMedicalInfoScreenState extends State<AddMedicalInfoScreen> {
       _type = _types.contains(e.type) ? e.type : _types.first;
       _details.text = e.details;
     }
-    _dateText = TextEditingController(text: formatDate(_date));
+    _dateText = TextEditingController();
   }
 
   @override
@@ -56,10 +59,7 @@ class _AddMedicalInfoScreenState extends State<AddMedicalInfoScreen> {
       lastDate: DateTime.now(),
     );
     if (picked == null) return;
-    setState(() {
-      _date = picked;
-      _dateText.text = formatDate(picked);
-    });
+    setState(() => _date = picked);
   }
 
   void _save() {
@@ -67,7 +67,7 @@ class _AddMedicalInfoScreenState extends State<AddMedicalInfoScreen> {
     if (doctor == null) return;
     if (_details.text.trim().isEmpty) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Write the details first')));
+          .showSnackBar(SnackBar(content: Text(context.tr('Write the details first'))));
       return;
     }
     final e = widget.entry;
@@ -94,52 +94,53 @@ class _AddMedicalInfoScreenState extends State<AddMedicalInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    _dateText.text = formatDate(_date, ar: context.isAr);
     return ScreenScaffold(
-      title: widget.entry == null ? 'Add medical info' : 'Edit medical info',
+      title: widget.entry == null ? context.tr('Add medical info') : context.tr('Edit medical info'),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           AppTextField(
-            label: 'Date',
+            label: context.tr('Date'),
             controller: _dateText,
             readOnly: true,
             onTap: _pickDate,
           ),
           kGap,
-          const Text('Type', style: AppText.label),
-          const SizedBox(height: 5),
+          Text(context.tr('Type'), style: AppText.label),
+          SizedBox(height: 5),
           DropdownButtonFormField<String>(
             value: _type,
             items: [
-              for (final t in _types) DropdownMenuItem(value: t, child: Text(t)),
+              for (final t in _types) DropdownMenuItem(value: t, child: Text(context.tr(t))),
             ],
             onChanged: (v) => setState(() => _type = v ?? _type),
             decoration: InputDecoration(
               filled: true,
               fillColor: Colors.white,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 13, vertical: 12),
+              contentPadding: EdgeInsets.symmetric(horizontal: 13, vertical: 12),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.fieldBorder),
+                borderSide: BorderSide(color: AppColors.fieldBorder),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: const BorderSide(color: AppColors.fieldBorder),
+                borderSide: BorderSide(color: AppColors.fieldBorder),
               ),
             ),
           ),
           kGap,
-          AppTextField(label: 'Details', controller: _details, maxLines: 5),
+          AppTextField(label: context.tr('Details'), controller: _details, maxLines: 5),
           kGap,
-          AppButton(label: 'Save', onPressed: _save),
+          AppButton(label: context.tr('Save'), onPressed: _save),
           kGap,
           AppButton(
-            label: 'Cancel',
+            label: context.tr('Cancel'),
             primary: false,
             onPressed: () => Navigator.of(context).pop(),
           ),
-          const SizedBox(height: 10),
-          const Text('Saved with your name and the date.', style: AppText.note),
+          SizedBox(height: 10),
+          Text(context.tr('Saved with your name and the date.'), style: AppText.note),
         ],
       ),
     );

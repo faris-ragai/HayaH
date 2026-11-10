@@ -3,13 +3,20 @@ const _months = [
   'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',
 ];
 
+const _monthsAr = [
+  'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+  'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر',
+];
+
 String _two(int n) => n.toString().padLeft(2, '0');
 
-/// 12 Oct 2026
-String formatDate(DateTime d) => '${_two(d.day)} ${_months[d.month - 1]} ${d.year}';
+/// 12 Oct 2026   (Arabic: 12 أكتوبر 2026)
+String formatDate(DateTime d, {bool ar = false}) =>
+    '${_two(d.day)} ${(ar ? _monthsAr : _months)[d.month - 1]} ${d.year}';
 
 /// 12 Oct 2026, 14:05
-String formatDateTime(DateTime d) => '${formatDate(d)}, ${_two(d.hour)}:${_two(d.minute)}';
+String formatDateTime(DateTime d, {bool ar = false}) =>
+    '${formatDate(d, ar: ar)}, ${_two(d.hour)}:${_two(d.minute)}';
 
 bool isSameDay(DateTime a, DateTime b) =>
     a.year == b.year && a.month == b.month && a.day == b.day;

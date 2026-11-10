@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../model/date_format.dart';
 import '../model/user.dart';
 import '../service/patient_service.dart';
@@ -20,14 +23,14 @@ class HistoryLogScreen extends StatelessWidget {
       builder: (context, _) {
         final items = service.logs(patient.nationalId);
         return ScreenScaffold(
-          title: 'History log',
+          title: context.tr('History log'),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               if (items.isEmpty)
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(24),
-                  child: Text('Nothing here yet.',
+                  child: Text(context.tr('Nothing here yet.'),
                       textAlign: TextAlign.center, style: AppText.sub),
                 ),
               for (final item in items) ...[
@@ -38,11 +41,11 @@ class HistoryLogScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(item.action, style: AppText.title),
-                          Text(formatDate(item.date), style: AppText.sub),
+                          Text(context.tr(item.action), style: AppText.title),
+                          Text(formatDate(item.date, ar: context.isAr), style: AppText.sub),
                         ],
                       ),
-                      const SizedBox(height: 3),
+                      SizedBox(height: 3),
                       Text(item.doctorName, style: AppText.sub),
                     ],
                   ),

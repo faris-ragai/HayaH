@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../service/auth_service.dart';
 import '../service/patient_service.dart';
 import '../widgets/app_button.dart';
@@ -17,29 +20,29 @@ class DoctorHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final doctor = AuthService.instance.currentDoctor;
-    if (doctor == null) return const SizedBox.shrink();
+    if (doctor == null) return SizedBox.shrink();
     final service = PatientService.instance;
 
     return ListenableBuilder(
       listenable: Listenable.merge([service, AuthService.instance]),
       builder: (context, _) {
         return ScreenScaffold(
-          title: 'Dr. ${doctor.firstName}',
+          title: context.tr('Dr. {name}', {'name': doctor.firstName}),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               AppTextField(
-                label: 'Search patient',
-                hint: 'National ID or name',
+                label: context.tr('Search patient'),
+                hint: context.tr('National ID or name'),
                 onSubmitted: (text) => Navigator.of(context).push(
                   MaterialPageRoute(builder: (_) => SearchScreen(initialQuery: text)),
                 ),
               ),
               kGap,
               AppButton(
-                label: 'Scan patient QR',
+                label: context.tr('Scan patient QR'),
                 onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const ScanQrScreen()),
+                  MaterialPageRoute(builder: (_) => ScanQrScreen()),
                 ),
               ),
               kGap,
@@ -47,13 +50,13 @@ class DoctorHomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Recent patients', style: AppText.title),
-                    const SizedBox(height: 4),
+                    Text(context.tr('Recent patients'), style: AppText.title),
+                    SizedBox(height: 4),
                     for (final p in service.recentPatients)
                       InkWell(
                         onTap: () => openPatient(context, p),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 5),
+                          padding: EdgeInsets.symmetric(vertical: 5),
                           child: SizedBox(
                             width: double.infinity,
                             child: Text(p.name, style: AppText.sub.copyWith(fontSize: 12.5)),
@@ -68,7 +71,7 @@ class DoctorHomeScreen extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('My roshettas today', style: AppText.title),
+                    Text(context.tr('My roshettas today'), style: AppText.title),
                     Pill(text: '${service.roshettasTodayBy(doctor)}'),
                   ],
                 ),

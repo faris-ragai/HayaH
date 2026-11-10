@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../model/user.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_theme.dart';
@@ -14,37 +17,37 @@ class NoAccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenScaffold(
-      title: 'Patient file',
+      title: context.tr('Patient file'),
       footer: AppButton(
-        label: 'Back to search',
+        label: context.tr('Back to search'),
         onPressed: () => Navigator.of(context).pop(),
       ),
       child: Column(
         children: [
-          const SizedBox(height: 80),
+          SizedBox(height: 80),
           Container(
             width: 80,
             height: 80,
-            decoration: const BoxDecoration(color: AppColors.tint, shape: BoxShape.circle),
-            child: const Icon(Icons.lock_outline, size: 34, color: AppColors.green),
+            decoration: BoxDecoration(color: AppColors.tint, shape: BoxShape.circle),
+            child: Icon(Icons.lock_outline, size: 34, color: AppColors.green),
           ),
-          const SizedBox(height: 14),
-          const Text('No access',
+          SizedBox(height: 14),
+          Text(context.tr('No access'),
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.ink)),
-          const SizedBox(height: 8),
-          const Padding(
+          SizedBox(height: 8),
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              'This patient has not allowed you to open the file. Ask them to allow you or show their QR.',
+              context.tr('This patient has not allowed you to open the file. Ask them to allow you or show their QR.'),
               textAlign: TextAlign.center,
               style: AppText.sub,
             ),
           ),
-          const SizedBox(height: 22),
+          SizedBox(height: 22),
           SizedBox(
             width: 220,
             child: AppButton(
-              label: 'View basic info',
+              label: context.tr('View basic info'),
               primary: false,
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(builder: (_) => BasicProfileScreen(patient: patient)),

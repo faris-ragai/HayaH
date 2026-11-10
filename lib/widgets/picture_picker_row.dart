@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import 'app_button.dart';
 import 'app_theme.dart';
 
@@ -21,13 +24,13 @@ class _PicturePickerRowState extends State<PicturePickerRow> {
         Container(
           width: 52,
           height: 52,
-          decoration: const BoxDecoration(color: AppColors.tint, shape: BoxShape.circle),
+          decoration: BoxDecoration(color: AppColors.tint, shape: BoxShape.circle),
           child: Icon(_added ? Icons.check : Icons.add, color: AppColors.green),
         ),
-        const SizedBox(width: 10),
+        SizedBox(width: 10),
         Expanded(
           child: AppButton(
-            label: _added ? 'Picture added' : 'Add picture',
+            label: _added ? context.tr('Picture added') : context.tr('Add picture'),
             primary: false,
             onPressed: () => setState(() => _added = !_added),
           ),

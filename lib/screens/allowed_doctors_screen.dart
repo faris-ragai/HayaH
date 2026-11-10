@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../service/auth_service.dart';
 import '../service/patient_service.dart';
 import '../widgets/app_button.dart';
@@ -20,17 +23,17 @@ class AllowedDoctorsScreen extends StatelessWidget {
       builder: (sheetContext) {
         return SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(14),
+            padding: EdgeInsets.all(14),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Text('Allow a doctor', style: AppText.title),
-                const SizedBox(height: 10),
+                Text(context.tr('Allow a doctor'), style: AppText.title),
+                SizedBox(height: 10),
                 if (options.isEmpty)
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.all(12),
-                    child: Text('All doctors are already allowed.', style: AppText.sub),
+                    child: Text(context.tr('All doctors are already allowed.'), style: AppText.sub),
                   ),
                 for (final d in options) ...[
                   InfoCard(
@@ -42,7 +45,7 @@ class AllowedDoctorsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(d.displayName, style: AppText.title),
-                        const SizedBox(height: 3),
+                        SizedBox(height: 3),
                         Text(d.specialty, style: AppText.sub),
                       ],
                     ),
@@ -60,7 +63,7 @@ class AllowedDoctorsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final patient = AuthService.instance.currentPatient;
-    if (patient == null) return const SizedBox.shrink();
+    if (patient == null) return SizedBox.shrink();
     final service = PatientService.instance;
 
     return ListenableBuilder(
@@ -68,7 +71,7 @@ class AllowedDoctorsScreen extends StatelessWidget {
       builder: (context, _) {
         final doctors = service.allowedDoctors(patient.nationalId);
         return ScreenScaffold(
-          title: 'Allowed doctors',
+          title: context.tr('Allowed doctors'),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -81,13 +84,13 @@ class AllowedDoctorsScreen extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(d.displayName, style: AppText.title),
-                            const SizedBox(height: 3),
+                            SizedBox(height: 3),
                             Text(d.specialty, style: AppText.sub),
                           ],
                         ),
                       ),
                       Pill(
-                        text: 'Remove',
+                        text: context.tr('Remove'),
                         onTap: () =>
                             service.removeDoctor(patient.nationalId, d.nationalId),
                       ),
@@ -97,17 +100,17 @@ class AllowedDoctorsScreen extends StatelessWidget {
                 kGap,
               ],
               if (doctors.isEmpty)
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(20),
-                  child: Text('No doctor is allowed yet.',
+                  child: Text(context.tr('No doctor is allowed yet.'),
                       textAlign: TextAlign.center, style: AppText.sub),
                 ),
               AppButton(
-                label: 'Allow a doctor',
+                label: context.tr('Allow a doctor'),
                 onPressed: () => _pickDoctor(context, patient.nationalId),
               ),
-              const SizedBox(height: 10),
-              const Text('Doctors can open your file only if you allow them.',
+              SizedBox(height: 10),
+              Text(context.tr('Doctors can open your file only if you allow them.'),
                   style: AppText.note),
             ],
           ),

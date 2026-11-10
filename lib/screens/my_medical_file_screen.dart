@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../service/auth_service.dart';
 import '../service/patient_service.dart';
 import '../widgets/app_button.dart';
@@ -17,7 +20,7 @@ class MyMedicalFileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final patient = AuthService.instance.currentPatient;
-    if (patient == null) return const SizedBox.shrink();
+    if (patient == null) return SizedBox.shrink();
     final service = PatientService.instance;
 
     return ListenableBuilder(
@@ -25,8 +28,8 @@ class MyMedicalFileScreen extends StatelessWidget {
       builder: (context, _) {
         final entries = service.entries(patient.nationalId);
         return ScreenScaffold(
-          title: 'My medical file',
-          trailing: const Pill(text: 'Read only'),
+          title: context.tr('My medical file'),
+          trailing: Pill(text: context.tr('Read only')),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -35,9 +38,9 @@ class MyMedicalFileScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Allergies and chronic diseases', style: AppText.title),
-                    const SizedBox(height: 5),
-                    Text(patient.allergies.isEmpty ? 'None recorded' : patient.allergies,
+                    Text(context.tr('Allergies and chronic diseases'), style: AppText.title),
+                    SizedBox(height: 5),
+                    Text(patient.allergies.isEmpty ? context.tr('None recorded') : patient.allergies,
                         style: AppText.value),
                   ],
                 ),
@@ -48,9 +51,9 @@ class MyMedicalFileScreen extends StatelessWidget {
               ],
               if (entries.isEmpty) ...[
                 kGap,
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(18),
-                  child: Text('No entries yet. Your doctor will add them.',
+                  child: Text(context.tr('No entries yet. Your doctor will add them.'),
                       textAlign: TextAlign.center, style: AppText.sub),
                 ),
               ],
@@ -59,7 +62,7 @@ class MyMedicalFileScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: AppButton(
-                      label: 'Reports',
+                      label: context.tr('Reports'),
                       primary: false,
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
@@ -68,10 +71,10 @@ class MyMedicalFileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  SizedBox(width: 10),
                   Expanded(
                     child: AppButton(
-                      label: 'History log',
+                      label: context.tr('History log'),
                       primary: false,
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
@@ -82,8 +85,8 @@ class MyMedicalFileScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
-              const Text('Only your doctor can write in this file.',
+              SizedBox(height: 10),
+              Text(context.tr('Only your doctor can write in this file.'),
                   textAlign: TextAlign.center, style: AppText.note),
             ],
           ),

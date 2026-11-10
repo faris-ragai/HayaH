@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../service/auth_service.dart';
 import '../service/patient_service.dart';
 import '../widgets/app_theme.dart';
@@ -12,7 +15,7 @@ class MyRoshettasScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final patient = AuthService.instance.currentPatient;
-    if (patient == null) return const SizedBox.shrink();
+    if (patient == null) return SizedBox.shrink();
     final service = PatientService.instance;
 
     return ListenableBuilder(
@@ -20,14 +23,14 @@ class MyRoshettasScreen extends StatelessWidget {
       builder: (context, _) {
         final list = service.roshettas(patient.nationalId);
         return ScreenScaffold(
-          title: 'My roshettas',
+          title: context.tr('My roshettas'),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               if (list.isEmpty)
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(24),
-                  child: Text('No roshettas yet.',
+                  child: Text(context.tr('No roshettas yet.'),
                       textAlign: TextAlign.center, style: AppText.sub),
                 ),
               for (final r in list) ...[

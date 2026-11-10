@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../model/sync_status.dart';
 import '../service/settings_service.dart';
 import '../widgets/app_button.dart';
@@ -17,7 +20,7 @@ class SyncStatesScreen extends StatelessWidget {
 
     Widget row(SyncStatus status, String text, {String? chip}) {
       return Padding(
-        padding: const EdgeInsets.only(bottom: 11),
+        padding: EdgeInsets.only(bottom: 11),
         child: InfoCard(
           tint: settings.status == status,
           onTap: () => settings.setStatus(status),
@@ -27,11 +30,11 @@ class SyncStatesScreen extends StatelessWidget {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(status.label, style: AppText.title),
+                  Text(context.tr(status.label), style: AppText.title),
                   if (chip != null) Pill(text: chip),
                 ],
               ),
-              const SizedBox(height: 4),
+              SizedBox(height: 4),
               Text(text, style: AppText.sub),
             ],
           ),
@@ -43,18 +46,18 @@ class SyncStatesScreen extends StatelessWidget {
       listenable: settings,
       builder: (context, _) {
         return ScreenScaffold(
-          title: 'Sync states',
+          title: context.tr('Sync states'),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              row(SyncStatus.offline, 'No internet. Changes are saved on this device.'),
-              row(SyncStatus.pending, 'Waiting for internet to send them.',
-                  chip: '${settings.pendingChanges} changes'),
-              row(SyncStatus.synced, 'Everything is up to date.'),
+              row(SyncStatus.offline, context.tr('No internet. Changes are saved on this device.')),
+              row(SyncStatus.pending, context.tr('Waiting for internet to send them.'),
+                  chip: context.tr('{n} changes', {'n': '${settings.pendingChanges}'})),
+              row(SyncStatus.synced, context.tr('Everything is up to date.')),
               row(SyncStatus.conflict,
-                  'Same record edited twice. Latest edit is kept and the old version is saved in the history log.'),
+                  context.tr('Same record edited twice. Latest edit is kept and the old version is saved in the history log.')),
               AppButton(
-                label: 'Refresh now',
+                label: context.tr('Refresh now'),
                 primary: false,
                 onPressed: settings.refreshNow,
               ),

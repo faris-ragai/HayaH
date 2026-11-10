@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../model/user.dart';
 import '../widgets/app_theme.dart';
 import '../widgets/avatar_circle.dart';
@@ -15,38 +18,38 @@ class BasicProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenScaffold(
-      title: 'Profile',
+      title: context.tr('Profile'),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const SizedBox(height: 14),
+          SizedBox(height: 14),
           Center(child: AvatarCircle(initials: patient.initials)),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           Text(patient.name,
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 17, fontWeight: FontWeight.w700, color: AppColors.ink)),
-          const SizedBox(height: 8),
-          const Center(child: Pill(text: 'Basic info only')),
-          const SizedBox(height: 18),
-          const InfoCard(
+          SizedBox(height: 8),
+          Center(child: Pill(text: context.tr('Basic info only'))),
+          SizedBox(height: 18),
+          InfoCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('National ID', style: AppText.label),
+                Text(context.tr('National ID'), style: AppText.label),
                 SizedBox(height: 4),
-                Text('[Hidden]', style: AppText.value),
+                Text(context.tr('[Hidden]'), style: AppText.value),
               ],
             ),
           ),
           kGap,
-          const InfoCard(
+          InfoCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Medical file', style: AppText.label),
+                Text(context.tr('Medical file'), style: AppText.label),
                 SizedBox(height: 4),
-                Text('Only doctors allowed by the patient can open it.',
+                Text(context.tr('Only doctors allowed by the patient can open it.'),
                     style: AppText.value),
               ],
             ),

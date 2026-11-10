@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../service/auth_service.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_text_field.dart';
@@ -47,36 +50,36 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
     );
     FocusScope.of(context).unfocus();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Profile saved')),
+      SnackBar(content: Text(context.tr('Profile saved'))),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final doctor = AuthService.instance.currentDoctor;
-    if (doctor == null) return const SizedBox.shrink();
+    if (doctor == null) return SizedBox.shrink();
     return ScreenScaffold(
-      title: 'My profile',
+      title: context.tr('My profile'),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Center(child: AvatarCircle(initials: doctor.initials)),
           kGap,
-          AppTextField(label: 'Name', controller: _name),
+          AppTextField(label: context.tr('Name'), controller: _name),
           kGap,
-          AppTextField(label: 'National ID', controller: _id, readOnly: true),
+          AppTextField(label: context.tr('National ID'), controller: _id, readOnly: true),
           kGap,
-          AppTextField(label: 'Specialty', controller: _specialty),
+          AppTextField(label: context.tr('Specialty'), controller: _specialty),
           kGap,
-          AppTextField(label: 'License number', controller: _license),
+          AppTextField(label: context.tr('License number'), controller: _license),
           kGap,
-          AppButton(label: 'Save', onPressed: _save),
+          AppButton(label: context.tr('Save'), onPressed: _save),
           kGap,
           AppButton(
-            label: 'Settings',
+            label: context.tr('Settings'),
             primary: false,
             onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              MaterialPageRoute(builder: (_) => SettingsScreen()),
             ),
           ),
         ],

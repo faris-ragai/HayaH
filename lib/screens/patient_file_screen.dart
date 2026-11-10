@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../model/user.dart';
 import '../service/patient_service.dart';
 import '../widgets/app_button.dart';
@@ -30,9 +33,9 @@ class PatientFileScreen extends StatelessWidget {
             width: 30,
             height: 30,
             alignment: Alignment.center,
-            decoration: const BoxDecoration(color: AppColors.tint, shape: BoxShape.circle),
+            decoration: BoxDecoration(color: AppColors.tint, shape: BoxShape.circle),
             child: Text(patient.initials,
-                style: const TextStyle(
+                style: TextStyle(
                     fontSize: 10.5, fontWeight: FontWeight.w700, color: AppColors.green)),
           ),
           child: Column(
@@ -43,9 +46,9 @@ class PatientFileScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Allergies and chronic diseases', style: AppText.title),
-                    const SizedBox(height: 5),
-                    Text(patient.allergies.isEmpty ? 'None recorded' : patient.allergies,
+                    Text(context.tr('Allergies and chronic diseases'), style: AppText.title),
+                    SizedBox(height: 5),
+                    Text(patient.allergies.isEmpty ? context.tr('None recorded') : patient.allergies,
                         style: AppText.value),
                   ],
                 ),
@@ -55,7 +58,7 @@ class PatientFileScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: AppButton(
-                      label: 'Add info',
+                      label: context.tr('Add info'),
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (_) => AddMedicalInfoScreen(patient: patient),
@@ -63,10 +66,10 @@ class PatientFileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  SizedBox(width: 10),
                   Expanded(
                     child: AppButton(
-                      label: 'New roshetta',
+                      label: context.tr('New roshetta'),
                       primary: false,
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
@@ -93,7 +96,7 @@ class PatientFileScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: AppButton(
-                      label: 'Reports',
+                      label: context.tr('Reports'),
                       primary: false,
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
@@ -102,10 +105,10 @@ class PatientFileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  SizedBox(width: 10),
                   Expanded(
                     child: AppButton(
-                      label: 'History log',
+                      label: context.tr('History log'),
                       primary: false,
                       onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
@@ -116,8 +119,8 @@ class PatientFileScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: 10),
-              const Text('Tap an entry to edit it.',
+              SizedBox(height: 10),
+              Text(context.tr('Tap an entry to edit it.'),
                   textAlign: TextAlign.center, style: AppText.note),
             ],
           ),

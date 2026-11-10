@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../model/date_format.dart';
 import '../model/roshetta.dart';
 import 'app_theme.dart';
@@ -22,13 +25,13 @@ class RoshettaTile extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(roshetta.medicine, style: AppText.title),
-                const SizedBox(height: 3),
-                Text('${roshetta.doctorName}, ${formatDate(roshetta.date)}',
+                SizedBox(height: 3),
+                Text('${roshetta.doctorName}, ${formatDate(roshetta.date, ar: context.isAr)}',
                     style: AppText.sub),
               ],
             ),
           ),
-          const PicBox(label: 'Pic', width: 46, height: 46),
+          PicBox(label: context.tr('Pic'), width: 46, height: 46),
         ],
       ),
     );

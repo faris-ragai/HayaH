@@ -37,8 +37,12 @@ Welcome -> Login -> (Create account -> New patient <-> New doctor)
   Search/Scan -> Patient file (or No access -> Basic profile)
   Patient file -> Add medical info, New roshetta, Reports, History log
 
+## Languages
+Arabic (right-to-left, default) and English. All screen texts are in `lib/service/localization_service.dart`: use `context.tr('English text')`. Switch from the Welcome screen or Settings.
+
 ## Saved data
 Data is saved on the device (shared_preferences) and you stay logged in. To reset to the demo data, clear the app data or uninstall.
 
 ## Not done on purpose
-Real QR/camera, picture picker, translation (the language choice is stored only), real sync, Arabic RTL.
+Real QR/camera, picture picker, real sync.
+Names and notes typed by users (e.g. "Dr. Omar Hassan", "Blood pressure checked") are data, so they stay in the language they were written in.

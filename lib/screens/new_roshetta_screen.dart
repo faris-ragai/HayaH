@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../model/user.dart';
 import '../service/auth_service.dart';
 import '../service/patient_service.dart';
@@ -44,7 +47,7 @@ class _NewRoshettaScreenState extends State<NewRoshettaScreen> {
     if (doctor == null) return;
     if (_medicine.text.trim().isEmpty) {
       ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Enter the medicine name')));
+          .showSnackBar(SnackBar(content: Text(context.tr('Enter the medicine name'))));
       return;
     }
     PatientService.instance.addRoshetta(
@@ -61,29 +64,29 @@ class _NewRoshettaScreenState extends State<NewRoshettaScreen> {
   @override
   Widget build(BuildContext context) {
     return ScreenScaffold(
-      title: 'New roshetta',
+      title: context.tr('New roshetta'),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          AppTextField(label: 'Medicine name', controller: _medicine),
+          AppTextField(label: context.tr('Medicine name'), controller: _medicine),
           kGap,
-          AppTextField(label: 'Doctor name', controller: _doctorName),
+          AppTextField(label: context.tr('Doctor name'), controller: _doctorName),
           kGap,
-          AppTextField(label: 'Description', controller: _description, maxLines: 5),
+          AppTextField(label: context.tr('Description'), controller: _description, maxLines: 5),
           kGap,
           PicBox(
-            label: _hasPicture ? '[Picture added]' : '[Roshetta picture]',
+            label: _hasPicture ? context.tr('[Picture added]') : context.tr('[Roshetta picture]'),
             height: 76,
             radius: 14,
           ),
           kGap,
           AppButton(
-            label: _hasPicture ? 'Remove picture' : 'Add picture',
+            label: _hasPicture ? context.tr('Remove picture') : context.tr('Add picture'),
             primary: false,
             onPressed: () => setState(() => _hasPicture = !_hasPicture),
           ),
           kGap,
-          AppButton(label: 'Save roshetta', onPressed: _save),
+          AppButton(label: context.tr('Save roshetta'), onPressed: _save),
         ],
       ),
     );

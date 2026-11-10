@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../widgets/app_bottom_nav.dart';
 import 'doctor_home_screen.dart';
 import 'doctor_profile_screen.dart';
@@ -29,7 +32,7 @@ class _DoctorShellScreenState extends State<DoctorShellScreen> {
         ],
       ),
       bottomNavigationBar: AppBottomNav(
-        labels: const ['Home', 'Search', 'Scan', 'Profile'],
+        labels: [context.tr('Home'), context.tr('Search'), context.tr('Scan'), context.tr('Profile')],
         index: _index,
         onTap: (i) => setState(() => _index = i),
       ),

@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../service/auth_service.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_text_field.dart';
@@ -40,7 +43,7 @@ class _RegisterDoctorScreenState extends State<RegisterDoctorScreen> {
       password: _password.text,
     );
     if (error != null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.tr(error))));
       return;
     }
     goToHome(context);
@@ -49,29 +52,29 @@ class _RegisterDoctorScreenState extends State<RegisterDoctorScreen> {
   @override
   Widget build(BuildContext context) {
     return ScreenScaffold(
-      title: 'New doctor',
+      title: context.tr('New doctor'),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const PicturePickerRow(),
+          PicturePickerRow(),
           kGap,
-          AppTextField(label: 'Full name', controller: _name),
+          AppTextField(label: context.tr('Full name'), controller: _name),
           kGap,
           AppTextField(
-            label: 'National ID (your user ID)',
-            hint: '14 digits',
+            label: context.tr('National ID (your user ID)'),
+            hint: context.tr('14 digits'),
             controller: _id,
             keyboardType: TextInputType.number,
             maxLength: 14,
           ),
           kGap,
-          AppTextField(label: 'Specialty', controller: _specialty),
+          AppTextField(label: context.tr('Specialty'), controller: _specialty),
           kGap,
-          AppTextField(label: 'License number', controller: _license),
+          AppTextField(label: context.tr('License number'), controller: _license),
           kGap,
-          AppTextField(label: 'Password', controller: _password, obscure: true),
+          AppTextField(label: context.tr('Password'), controller: _password, obscure: true),
           kGap,
-          AppButton(label: 'Create doctor account', onPressed: _create),
+          AppButton(label: context.tr('Create doctor account'), onPressed: _create),
         ],
       ),
     );

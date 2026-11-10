@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../model/sync_status.dart';
 import '../service/auth_service.dart';
 import '../service/patient_service.dart';
@@ -20,7 +23,7 @@ class PatientHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final patient = AuthService.instance.currentPatient;
-    if (patient == null) return const SizedBox.shrink();
+    if (patient == null) return SizedBox.shrink();
     final service = PatientService.instance;
     final settings = SettingsService.instance;
 
@@ -31,8 +34,8 @@ class PatientHomeScreen extends StatelessWidget {
         final allowedCount = service.allowedDoctors(patient.nationalId).length;
         final logCount = service.logs(patient.nationalId).length;
         return ScreenScaffold(
-          title: 'Hello, ${patient.firstName}',
-          trailing: Pill(text: settings.status.label),
+          title: context.tr('Hello, {name}', {'name': patient.firstName}),
+          trailing: Pill(text: context.tr(settings.status.label)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -41,24 +44,24 @@ class PatientHomeScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Allergies and chronic diseases', style: AppText.title),
-                    const SizedBox(height: 5),
-                    Text(patient.allergies.isEmpty ? 'None recorded' : patient.allergies,
+                    Text(context.tr('Allergies and chronic diseases'), style: AppText.title),
+                    SizedBox(height: 5),
+                    Text(patient.allergies.isEmpty ? context.tr('None recorded') : patient.allergies,
                         style: AppText.value),
                   ],
                 ),
               ),
               kGap,
               AppButton(
-                label: 'Show my QR',
+                label: context.tr('Show my QR'),
                 onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const MyQrScreen()),
+                  MaterialPageRoute(builder: (_) => MyQrScreen()),
                 ),
               ),
               if (roshettas.isNotEmpty) ...[
                 kGap,
-                const Text('Latest roshetta', style: AppText.label),
-                const SizedBox(height: 6),
+                Text(context.tr('Latest roshetta'), style: AppText.label),
+                SizedBox(height: 6),
                 RoshettaTile(
                   roshetta: roshettas.first,
                   onTap: () => Navigator.of(context).push(
@@ -71,14 +74,14 @@ class PatientHomeScreen extends StatelessWidget {
               kGap,
               InfoCard(
                 onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const AllowedDoctorsScreen()),
+                  MaterialPageRoute(builder: (_) => AllowedDoctorsScreen()),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+                padding: EdgeInsets.symmetric(horizontal: 14, vertical: 11),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Allowed doctors', style: AppText.title),
-                    Pill(text: '$allowedCount doctors'),
+                    Text(context.tr('Allowed doctors'), style: AppText.title),
+                    Pill(text: context.tr('{n} doctors', {'n': '$allowedCount'})),
                   ],
                 ),
               ),
@@ -89,12 +92,12 @@ class PatientHomeScreen extends StatelessWidget {
                     builder: (_) => HistoryLogScreen(patient: patient),
                   ),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+                padding: EdgeInsets.symmetric(horizontal: 14, vertical: 11),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('History log', style: AppText.title),
-                    Pill(text: '$logCount entries'),
+                    Text(context.tr('History log'), style: AppText.title),
+                    Pill(text: context.tr('{n} entries', {'n': '$logCount'})),
                   ],
                 ),
               ),

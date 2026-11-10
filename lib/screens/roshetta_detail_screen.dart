@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../model/roshetta.dart';
 import '../widgets/app_theme.dart';
 import '../widgets/info_card.dart';
@@ -17,7 +20,7 @@ class RoshettaDetailScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(label, style: AppText.label),
-          const SizedBox(height: 4),
+          SizedBox(height: 4),
           Text(
             value,
             style: TextStyle(
@@ -34,23 +37,23 @@ class RoshettaDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenScaffold(
-      title: 'Roshetta',
+      title: context.tr('Roshetta'),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           PicBox(
-            label: roshetta.hasPicture ? '[Roshetta picture]' : '[No picture]',
+            label: roshetta.hasPicture ? context.tr('[Roshetta picture]') : context.tr('[No picture]'),
             height: 184,
             radius: 14,
           ),
           kGap,
-          _field('Medicine name', roshetta.medicine),
+          _field(context.tr('Medicine name'), roshetta.medicine),
           kGap,
-          _field('Doctor name', roshetta.doctorName),
+          _field(context.tr('Doctor name'), roshetta.doctorName),
           kGap,
-          _field('Description', roshetta.description, bold: false),
-          const SizedBox(height: 10),
-          const Text('Read only. Only the doctor can write roshettas.',
+          _field(context.tr('Description'), roshetta.description, bold: false),
+          SizedBox(height: 10),
+          Text(context.tr('Read only. Only the doctor can write roshettas.'),
               style: AppText.note),
         ],
       ),

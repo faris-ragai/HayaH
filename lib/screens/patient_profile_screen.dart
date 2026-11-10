@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../service/auth_service.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_text_field.dart';
@@ -37,49 +40,49 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
     AuthService.instance.updateName(_name.text);
     FocusScope.of(context).unfocus();
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Profile saved')),
+      SnackBar(content: Text(context.tr('Profile saved'))),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final patient = AuthService.instance.currentPatient;
-    if (patient == null) return const SizedBox.shrink();
+    if (patient == null) return SizedBox.shrink();
     return ScreenScaffold(
-      title: 'My profile',
+      title: context.tr('My profile'),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Center(child: AvatarCircle(initials: patient.initials)),
           kGap,
           AppButton(
-            label: 'Change picture',
+            label: context.tr('Change picture'),
             primary: false,
             onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Picture picker is not connected in this UI version')),
+              SnackBar(content: Text(context.tr('Picture picker is not connected in this UI version'))),
             ),
           ),
           kGap,
-          AppTextField(label: 'Name', controller: _name),
+          AppTextField(label: context.tr('Name'), controller: _name),
           kGap,
           AppTextField(
-            label: 'National ID (your user ID)',
+            label: context.tr('National ID (your user ID)'),
             controller: _id,
             readOnly: true,
           ),
           kGap,
-          AppButton(label: 'Save', onPressed: _save),
+          AppButton(label: context.tr('Save'), onPressed: _save),
           kGap,
           AppButton(
-            label: 'Settings',
+            label: context.tr('Settings'),
             primary: false,
             onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const SettingsScreen()),
+              MaterialPageRoute(builder: (_) => SettingsScreen()),
             ),
           ),
-          const SizedBox(height: 12),
-          const Text(
-            'Only you can change your name and picture. Doctors cannot edit them.',
+          SizedBox(height: 12),
+          Text(
+            context.tr('Only you can change your name and picture. Doctors cannot edit them.'),
             textAlign: TextAlign.center,
             style: AppText.note,
           ),

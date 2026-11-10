@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../model/date_format.dart';
 import '../service/auth_service.dart';
 import '../service/settings_service.dart';
@@ -21,7 +24,7 @@ class SettingsScreen extends StatelessWidget {
       listenable: settings,
       builder: (context, _) {
         return ScreenScaffold(
-          title: 'Settings',
+          title: context.tr('Settings'),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -29,8 +32,8 @@ class SettingsScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text('Language', style: AppText.title),
-                    const SizedBox(height: 8),
+                    Text(context.tr('Language'), style: AppText.title),
+                    SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -52,7 +55,7 @@ class SettingsScreen extends StatelessWidget {
               kGap,
               InfoCard(
                 onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => const SyncStatesScreen()),
+                  MaterialPageRoute(builder: (_) => SyncStatesScreen()),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,25 +63,27 @@ class SettingsScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Sync status', style: AppText.title),
-                        Pill(text: settings.status.label),
+                        Text(context.tr('Sync status'), style: AppText.title),
+                        Pill(text: context.tr(settings.status.label)),
                       ],
                     ),
-                    const SizedBox(height: 6),
-                    Text('Last sync: ${formatDateTime(settings.lastSync)}',
+                    SizedBox(height: 6),
+                    Text(
+                        context.tr('Last sync: {date}',
+                            {'date': formatDateTime(settings.lastSync, ar: context.isAr)}),
                         style: AppText.sub),
                   ],
                 ),
               ),
               kGap,
               AppButton(
-                label: 'Refresh now',
+                label: context.tr('Refresh now'),
                 primary: false,
                 onPressed: settings.refreshNow,
               ),
               kGap,
               AppButton(
-                label: 'Logout',
+                label: context.tr('Logout'),
                 primary: false,
                 onPressed: () {
                   AuthService.instance.logout();

@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../service/auth_service.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_text_field.dart';
@@ -35,7 +38,7 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
       password: _password.text,
     );
     if (error != null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(error)));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.tr(error))));
       return;
     }
     goToHome(context);
@@ -44,31 +47,31 @@ class _RegisterPatientScreenState extends State<RegisterPatientScreen> {
   @override
   Widget build(BuildContext context) {
     return ScreenScaffold(
-      title: 'New patient',
+      title: context.tr('New patient'),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const PicturePickerRow(),
+          PicturePickerRow(),
           kGap,
-          AppTextField(label: 'Full name', controller: _name),
+          AppTextField(label: context.tr('Full name'), controller: _name),
           kGap,
           AppTextField(
-            label: 'National ID (your user ID)',
-            hint: '14 digits',
+            label: context.tr('National ID (your user ID)'),
+            hint: context.tr('14 digits'),
             controller: _id,
             keyboardType: TextInputType.number,
             maxLength: 14,
           ),
           kGap,
-          AppTextField(label: 'Password', controller: _password, obscure: true),
+          AppTextField(label: context.tr('Password'), controller: _password, obscure: true),
           kGap,
-          AppButton(label: 'Create account', onPressed: _create),
-          const SizedBox(height: 8),
+          AppButton(label: context.tr('Create account'), onPressed: _create),
+          SizedBox(height: 8),
           TextButton(
             onPressed: () => Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => const RegisterDoctorScreen()),
+              MaterialPageRoute(builder: (_) => RegisterDoctorScreen()),
             ),
-            child: const Text('Are you a doctor? Register as doctor',
+            child: Text(context.tr('Are you a doctor? Register as doctor'),
                 style: AppText.sub),
           ),
         ],

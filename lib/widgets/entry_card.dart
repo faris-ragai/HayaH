@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../model/date_format.dart';
 import '../model/medical_entry.dart';
 import 'app_theme.dart';
@@ -23,7 +26,7 @@ class EntryCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.baseline,
             textBaseline: TextBaseline.alphabetic,
             children: [
-              Text(formatDate(entry.date), style: AppText.title),
+              Text(formatDate(entry.date, ar: context.isAr), style: AppText.title),
               Text(entry.doctorName, style: const TextStyle(fontSize: 11, color: AppColors.muted)),
             ],
           ),

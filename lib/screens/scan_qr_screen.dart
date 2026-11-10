@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../service/patient_service.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_theme.dart';
@@ -28,7 +31,7 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
   @override
   Widget build(BuildContext context) {
     return ScreenScaffold(
-      title: 'Scan QR',
+      title: context.tr('Scan QR'),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -42,27 +45,27 @@ class _ScanQrScreenState extends State<ScanQrScreen> {
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: AppColors.green, width: 1.6),
               ),
-              child: const Column(
+              child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text('[Camera view]',
+                  Text(context.tr('[Camera view]'),
                       style: TextStyle(fontSize: 12, color: AppColors.green)),
                   SizedBox(height: 6),
-                  Text('Demo: tap here to simulate a scan',
+                  Text(context.tr('Demo: tap here to simulate a scan'),
                       style: TextStyle(fontSize: 11, color: AppColors.muted)),
                 ],
               ),
             ),
           ),
-          const SizedBox(height: 10),
-          const Text('Point the camera at the patient QR',
+          SizedBox(height: 10),
+          Text(context.tr('Point the camera at the patient QR'),
               textAlign: TextAlign.center, style: AppText.sub),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           AppButton(
-            label: 'Enter ID instead',
+            label: context.tr('Enter ID instead'),
             primary: false,
             onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => const SearchScreen()),
+              MaterialPageRoute(builder: (_) => SearchScreen()),
             ),
           ),
         ],

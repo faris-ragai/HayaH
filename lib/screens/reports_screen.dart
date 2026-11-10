@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../model/user.dart';
 import '../service/auth_service.dart';
 import '../service/patient_service.dart';
@@ -28,7 +31,7 @@ class ReportsScreen extends StatelessWidget {
                 maxScale: 5,
                 child: AspectRatio(
                   aspectRatio: 1,
-                  child: PicBox(label: '[$label]', radius: 0),
+                  child: PicBox(label: '[${context.tr(label)}]', radius: 0),
                 ),
               ),
             ),
@@ -36,7 +39,7 @@ class ReportsScreen extends StatelessWidget {
               child: Align(
                 alignment: Alignment.topRight,
                 child: IconButton(
-                  icon: const Icon(Icons.close, color: Colors.white),
+                  icon: Icon(Icons.close, color: Colors.white),
                   onPressed: () => Navigator.of(dialogContext).pop(),
                 ),
               ),
@@ -55,13 +58,13 @@ class ReportsScreen extends StatelessWidget {
       builder: (context, _) {
         final reports = service.reports(patient.nationalId);
         return ScreenScaffold(
-          title: 'Reports',
+          title: context.tr('Reports'),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               if (canUpload) ...[
                 AppButton(
-                  label: 'Upload lab result or X-ray',
+                  label: context.tr('Upload lab result or X-ray'),
                   onPressed: () {
                     final doctor = AuthService.instance.currentDoctor;
                     if (doctor != null) service.addReport(patient, doctor);
@@ -70,9 +73,9 @@ class ReportsScreen extends StatelessWidget {
                 kGap,
               ],
               if (reports.isEmpty)
-                const Padding(
+                Padding(
                   padding: EdgeInsets.all(24),
-                  child: Text('No reports yet.',
+                  child: Text(context.tr('No reports yet.'),
                       textAlign: TextAlign.center, style: AppText.sub),
                 ),
               GridView.count(
@@ -80,23 +83,23 @@ class ReportsScreen extends StatelessWidget {
                 mainAxisSpacing: 10,
                 crossAxisSpacing: 10,
                 shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
+                physics: NeverScrollableScrollPhysics(),
                 children: [
                   for (final r in reports)
                     GestureDetector(
                       onTap: () => _open(context, r),
-                      child: PicBox(label: '[$r]', radius: 14),
+                      child: PicBox(label: '[${context.tr(r)}]', radius: 14),
                     ),
                 ],
               ),
               kGap,
-              const InfoCard(
+              InfoCard(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Image viewer', style: AppText.title),
+                    Text(context.tr('Image viewer'), style: AppText.title),
                     SizedBox(height: 3),
-                    Text('Tap an image to open it full screen and zoom.',
+                    Text(context.tr('Tap an image to open it full screen and zoom.'),
                         style: AppText.sub),
                   ],
                 ),

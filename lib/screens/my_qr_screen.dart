@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../service/auth_service.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_theme.dart';
@@ -11,19 +14,19 @@ class MyQrScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final user = AuthService.instance.currentUser;
-    if (user == null) return const SizedBox.shrink();
+    if (user == null) return SizedBox.shrink();
     return ScreenScaffold(
-      title: 'My QR',
+      title: context.tr('My QR'),
       footer: AppButton(
-        label: 'Back',
+        label: context.tr('Back'),
         primary: false,
         onPressed: () => Navigator.of(context).pop(),
       ),
       child: Column(
         children: [
-          const SizedBox(height: 12),
+          SizedBox(height: 12),
           Container(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(16),
@@ -31,21 +34,21 @@ class MyQrScreen extends StatelessWidget {
             ),
             child: QrView(data: user.qrData),
           ),
-          const SizedBox(height: 18),
+          SizedBox(height: 18),
           Text(user.displayName,
-              style: const TextStyle(
+              style: TextStyle(
                   fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.ink)),
-          const SizedBox(height: 6),
-          Text('ID ${user.nationalId}',
-              style: const TextStyle(fontSize: 12.5, color: AppColors.muted)),
-          const SizedBox(height: 4),
-          const Text('Show this to your doctor',
+          SizedBox(height: 6),
+          Text(context.tr('ID {id}', {'id': user.nationalId}),
               style: TextStyle(fontSize: 12.5, color: AppColors.muted)),
-          const SizedBox(height: 16),
-          const Padding(
+          SizedBox(height: 4),
+          Text(context.tr('Show this to your doctor'),
+              style: TextStyle(fontSize: 12.5, color: AppColors.muted)),
+          SizedBox(height: 16),
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 14),
             child: Text(
-              'Made from your national ID. A doctor you allowed sees your full file; anyone else sees basic info only.',
+              context.tr('Made from your national ID. A doctor you allowed sees your full file; anyone else sees basic info only.'),
               textAlign: TextAlign.center,
               style: AppText.note,
             ),

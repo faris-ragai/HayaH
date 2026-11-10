@@ -1,4 +1,7 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
+import '../service/localization_service.dart';
 import '../service/patient_service.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/app_theme.dart';
@@ -37,33 +40,33 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     final results = PatientService.instance.search(_query.text, byId: _byId);
     return ScreenScaffold(
-      title: 'Search',
+      title: context.tr('Search'),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           AppTextField(
-            label: 'Search',
-            hint: 'National ID or name',
+            label: context.tr('Search'),
+            hint: context.tr('National ID or name'),
             controller: _query,
             onSubmitted: (_) => setState(() {}),
             suffix: IconButton(
-              icon: const Icon(Icons.search, color: AppColors.green),
+              icon: Icon(Icons.search, color: AppColors.green),
               onPressed: () => setState(() {}),
             ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: 10),
           Row(
             children: [
-              Pill(text: 'By ID', selected: _byId, onTap: () => setState(() => _byId = true)),
-              const SizedBox(width: 8),
-              Pill(text: 'By name', selected: !_byId, onTap: () => setState(() => _byId = false)),
+              Pill(text: context.tr('By ID'), selected: _byId, onTap: () => setState(() => _byId = true)),
+              SizedBox(width: 8),
+              Pill(text: context.tr('By name'), selected: !_byId, onTap: () => setState(() => _byId = false)),
             ],
           ),
           kGap,
           if (results.isEmpty)
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(24),
-              child: Text('No patients found.',
+              child: Text(context.tr('No patients found.'),
                   textAlign: TextAlign.center, style: AppText.sub),
             ),
           for (final p in results) ...[
@@ -72,18 +75,18 @@ class _SearchScreenState extends State<SearchScreen> {
               child: Row(
                 children: [
                   AvatarCircle(initials: p.initials, size: 52),
-                  const SizedBox(width: 12),
+                  SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(p.name, style: AppText.title),
-                        const SizedBox(height: 3),
-                        Text('ID ${p.nationalId.substring(0, 4)}...', style: AppText.sub),
+                        SizedBox(height: 3),
+                        Text(context.tr('ID {id}...', {'id': p.nationalId.substring(0, 4)}), style: AppText.sub),
                       ],
                     ),
                   ),
-                  const Text('Open', style: AppText.sub),
+                  Text(context.tr('Open'), style: AppText.sub),
                 ],
               ),
             ),
