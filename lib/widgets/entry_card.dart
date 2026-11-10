@@ -6,13 +6,15 @@ import 'info_card.dart';
 
 /// One medical-history entry (date, doctor, details).
 class EntryCard extends StatelessWidget {
-  const EntryCard({super.key, required this.entry});
+  const EntryCard({super.key, required this.entry, this.onTap});
 
   final MedicalEntry entry;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     return InfoCard(
+      onTap: onTap,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

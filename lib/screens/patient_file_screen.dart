@@ -79,7 +79,14 @@ class PatientFileScreen extends StatelessWidget {
               ),
               for (final e in entries) ...[
                 kGap,
-                EntryCard(entry: e),
+                EntryCard(
+                  entry: e,
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => AddMedicalInfoScreen(patient: patient, entry: e),
+                    ),
+                  ),
+                ),
               ],
               kGap,
               Row(
@@ -109,6 +116,9 @@ class PatientFileScreen extends StatelessWidget {
                   ),
                 ],
               ),
+              const SizedBox(height: 10),
+              const Text('Tap an entry to edit it.',
+                  textAlign: TextAlign.center, style: AppText.note),
             ],
           ),
         );

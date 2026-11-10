@@ -23,6 +23,12 @@ class AuthService extends ChangeNotifier {
     return u is Doctor ? u : null;
   }
 
+  /// Stay logged in: call once at app start.
+  void restoreSession() {
+    final id = _db.savedSessionId;
+    if (id != null) currentUser = _find(id);
+  }
+
   User? _find(String id) {
     for (final u in [..._db.doctors, ..._db.patients]) {
       if (u.nationalId == id) return u;
@@ -37,6 +43,7 @@ class AuthService extends ChangeNotifier {
       return 'Wrong National ID or password';
     }
     currentUser = user;
+    _db.saveSession(user.nationalId);
     notifyListeners();
     return null;
   }
@@ -71,6 +78,8 @@ class AuthService extends ChangeNotifier {
     _db.patients.add(patient);
     _initRecords(patient.nationalId, password);
     currentUser = patient;
+    _db.save();
+    _db.saveSession(patient.nationalId);
     notifyListeners();
     return null;
   }
@@ -96,12 +105,15 @@ class AuthService extends ChangeNotifier {
     _db.doctors.add(doctor);
     _initRecords(doctor.nationalId, password);
     currentUser = doctor;
+    _db.save();
+    _db.saveSession(doctor.nationalId);
     notifyListeners();
     return null;
   }
 
   void logout() {
     currentUser = null;
+    _db.saveSession(null);
     notifyListeners();
   }
 
@@ -110,6 +122,7 @@ class AuthService extends ChangeNotifier {
     final u = currentUser;
     if (u == null || name.trim().isEmpty) return;
     u.name = name.trim();
+    _db.save();
     notifyListeners();
   }
 
@@ -119,6 +132,7 @@ class AuthService extends ChangeNotifier {
     if (name != null && name.trim().isNotEmpty) d.name = name.trim();
     if (specialty != null) d.specialty = specialty.trim();
     if (licenseNumber != null) d.licenseNumber = licenseNumber.trim();
+    _db.save();
     notifyListeners();
   }
 }

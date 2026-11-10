@@ -1,7 +1,6 @@
-// ignore_for_file: deprecated_member_use
-
 import 'package:flutter/material.dart';
 import '../model/date_format.dart';
+import '../model/medical_entry.dart';
 import '../model/user.dart';
 import '../service/auth_service.dart';
 import '../service/patient_service.dart';
@@ -11,9 +10,12 @@ import '../widgets/app_theme.dart';
 import '../widgets/screen_scaffold.dart';
 
 class AddMedicalInfoScreen extends StatefulWidget {
-  const AddMedicalInfoScreen({super.key, required this.patient});
+  const AddMedicalInfoScreen({super.key, required this.patient, this.entry});
 
   final Patient patient;
+
+  /// When set, the screen edits this entry instead of adding a new one.
+  final MedicalEntry? entry;
 
   @override
   State<AddMedicalInfoScreen> createState() => _AddMedicalInfoScreenState();
@@ -30,6 +32,12 @@ class _AddMedicalInfoScreenState extends State<AddMedicalInfoScreen> {
   @override
   void initState() {
     super.initState();
+    final e = widget.entry;
+    if (e != null) {
+      _date = e.date;
+      _type = _types.contains(e.type) ? e.type : _types.first;
+      _details.text = e.details;
+    }
     _dateText = TextEditingController(text: formatDate(_date));
   }
 
@@ -62,20 +70,32 @@ class _AddMedicalInfoScreenState extends State<AddMedicalInfoScreen> {
           .showSnackBar(const SnackBar(content: Text('Write the details first')));
       return;
     }
-    PatientService.instance.addEntry(
-      patient: widget.patient,
-      doctor: doctor,
-      date: _date,
-      type: _type,
-      details: _details.text.trim(),
-    );
+    final e = widget.entry;
+    if (e == null) {
+      PatientService.instance.addEntry(
+        patient: widget.patient,
+        doctor: doctor,
+        date: _date,
+        type: _type,
+        details: _details.text.trim(),
+      );
+    } else {
+      PatientService.instance.editEntry(
+        patient: widget.patient,
+        doctor: doctor,
+        entryId: e.id,
+        date: _date,
+        type: _type,
+        details: _details.text.trim(),
+      );
+    }
     Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
     return ScreenScaffold(
-      title: 'Add medical info',
+      title: widget.entry == null ? 'Add medical info' : 'Edit medical info',
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

@@ -44,11 +44,13 @@ class PatientService extends ChangeNotifier {
   void allowDoctor(String patientId, String doctorId) {
     final list = _db.allowed.putIfAbsent(patientId, () => []);
     if (!list.contains(doctorId)) list.add(doctorId);
+    _db.save();
     notifyListeners();
   }
 
   void removeDoctor(String patientId, String doctorId) {
     _db.allowed[patientId]?.remove(doctorId);
+    _db.save();
     notifyListeners();
   }
 
@@ -68,12 +70,39 @@ class PatientService extends ChangeNotifier {
     required String details,
   }) {
     _db.entries.putIfAbsent(patient.nationalId, () => []).add(MedicalEntry(
+          id: _db.nextEntryId++,
           date: date,
           doctorName: doctor.displayName,
           type: type,
           details: details,
         ));
     _log(patient.nationalId, 'Added ${type.toLowerCase()}', doctor);
+    _db.save();
+    notifyListeners();
+  }
+
+  /// Doctor edits an old entry. The edit is written in the history log.
+  void editEntry({
+    required Patient patient,
+    required Doctor doctor,
+    required int entryId,
+    required DateTime date,
+    required String type,
+    required String details,
+  }) {
+    final list = _db.entries[patient.nationalId];
+    if (list == null) return;
+    final i = list.indexWhere((e) => e.id == entryId);
+    if (i < 0) return;
+    list[i] = MedicalEntry(
+      id: entryId,
+      date: date,
+      doctorName: doctor.displayName,
+      type: type,
+      details: details,
+    );
+    _log(patient.nationalId, 'Edited ${type.toLowerCase()}', doctor);
+    _db.save();
     notifyListeners();
   }
 
@@ -101,6 +130,7 @@ class PatientService extends ChangeNotifier {
           hasPicture: hasPicture,
         ));
     _log(patient.nationalId, 'Added roshetta', doctor);
+    _db.save();
     notifyListeners();
   }
 
@@ -139,6 +169,7 @@ class PatientService extends ChangeNotifier {
     final list = _db.reports.putIfAbsent(patient.nationalId, () => []);
     list.add(list.length.isEven ? 'Lab result' : 'X-ray');
     _log(patient.nationalId, 'Uploaded ${list.last.toLowerCase()}', doctor);
+    _db.save();
     notifyListeners();
   }
 }

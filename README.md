@@ -37,5 +37,8 @@ Welcome -> Login -> (Create account -> New patient <-> New doctor)
   Search/Scan -> Patient file (or No access -> Basic profile)
   Patient file -> Add medical info, New roshetta, Reports, History log
 
+## Saved data
+Data is saved on the device (shared_preferences) and you stay logged in. To reset to the demo data, clear the app data or uninstall.
+
 ## Not done on purpose
-Real QR/camera, picture picker, translation (the language choice is stored only), real sync.
+Real QR/camera, picture picker, translation (the language choice is stored only), real sync, Arabic RTL.

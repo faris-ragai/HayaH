@@ -25,6 +25,8 @@ class User {
 
   /// The QR code is generated from the national ID.
   String get qrData => nationalId;
+
+  Map<String, dynamic> toJson() => {'name': name, 'nationalId': nationalId};
 }
 
 class Patient extends User {
@@ -37,6 +39,15 @@ class Patient extends User {
 
   /// "Allergies and chronic diseases" box.
   String allergies;
+
+  @override
+  Map<String, dynamic> toJson() => {...super.toJson(), 'allergies': allergies};
+
+  factory Patient.fromJson(Map<String, dynamic> j) => Patient(
+        name: j['name'] as String,
+        nationalId: j['nationalId'] as String,
+        allergies: (j['allergies'] as String?) ?? '',
+      );
 }
 
 class Doctor extends User {
@@ -50,6 +61,20 @@ class Doctor extends User {
 
   String specialty;
   String licenseNumber;
+
+  @override
+  Map<String, dynamic> toJson() => {
+        ...super.toJson(),
+        'specialty': specialty,
+        'licenseNumber': licenseNumber,
+      };
+
+  factory Doctor.fromJson(Map<String, dynamic> j) => Doctor(
+        name: j['name'] as String,
+        nationalId: j['nationalId'] as String,
+        specialty: (j['specialty'] as String?) ?? '',
+        licenseNumber: (j['licenseNumber'] as String?) ?? '',
+      );
 
   @override
   String get displayName => name.startsWith('Dr.') ? name : 'Dr. $name';
