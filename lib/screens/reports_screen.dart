@@ -6,9 +6,11 @@ import '../model/user.dart';
 import '../service/auth_service.dart';
 import '../service/patient_service.dart';
 import '../widgets/app_button.dart';
+import '../widgets/app_image.dart';
 import '../widgets/app_theme.dart';
+import '../widgets/image_picker_sheet.dart';
 import '../widgets/info_card.dart';
-import '../widgets/pic_box.dart';
+import '../widgets/pill.dart';
 import '../widgets/screen_scaffold.dart';
 
 /// Lab results and X-rays. Only a doctor can upload (canUpload = true).
@@ -18,36 +20,42 @@ class ReportsScreen extends StatelessWidget {
   final Patient patient;
   final bool canUpload;
 
-  void _open(BuildContext context, String label) {
-    showDialog<void>(
+  /// Doctor: choose the type, then pick the picture from gallery / camera.
+  Future<void> _upload(BuildContext context) async {
+    final doctor = AuthService.instance.currentDoctor;
+    if (doctor == null) return;
+    final label = await showModalBottomSheet<String>(
       context: context,
-      builder: (dialogContext) => Dialog.fullscreen(
-        backgroundColor: Colors.black,
-        child: Stack(
-          children: [
-            Center(
-              child: InteractiveViewer(
-                minScale: 1,
-                maxScale: 5,
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: PicBox(label: '[${context.tr(label)}]', radius: 0),
-                ),
+      backgroundColor: AppColors.bg,
+      builder: (sheetContext) => SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(14),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(context.tr('Choose the type'), style: AppText.title),
+              SizedBox(height: 10),
+              AppButton(
+                label: context.tr('Lab result'),
+                primary: false,
+                onPressed: () => Navigator.of(sheetContext).pop('Lab result'),
               ),
-            ),
-            SafeArea(
-              child: Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                  icon: Icon(Icons.close, color: Colors.white),
-                  onPressed: () => Navigator.of(dialogContext).pop(),
-                ),
+              kGap,
+              AppButton(
+                label: context.tr('X-ray'),
+                primary: false,
+                onPressed: () => Navigator.of(sheetContext).pop('X-ray'),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
+    if (label == null || !context.mounted) return;
+    final imageId = await pickImageWithSheet(context);
+    if (imageId == null) return;
+    PatientService.instance.addReport(patient, doctor, label: label, imageId: imageId);
   }
 
   @override
@@ -65,10 +73,7 @@ class ReportsScreen extends StatelessWidget {
               if (canUpload) ...[
                 AppButton(
                   label: context.tr('Upload lab result or X-ray'),
-                  onPressed: () {
-                    final doctor = AuthService.instance.currentDoctor;
-                    if (doctor != null) service.addReport(patient, doctor);
-                  },
+                  onPressed: () => _upload(context),
                 ),
                 kGap,
               ],
@@ -87,8 +92,24 @@ class ReportsScreen extends StatelessWidget {
                 children: [
                   for (final r in reports)
                     GestureDetector(
-                      onTap: () => _open(context, r),
-                      child: PicBox(label: '[${context.tr(r)}]', radius: 14),
+                      onTap: () => showImageViewer(
+                          context, r.imageId, '[${context.tr(r.label)}]'),
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          AppImage(
+                            imageId: r.imageId,
+                            placeholder: '[${context.tr(r.label)}]',
+                            radius: 14,
+                          ),
+                          if (r.imageId != null)
+                            PositionedDirectional(
+                              start: 8,
+                              bottom: 8,
+                              child: Pill(text: context.tr(r.label)),
+                            ),
+                        ],
+                      ),
                     ),
                 ],
               ),

@@ -6,7 +6,7 @@ import '../model/date_format.dart';
 import '../model/roshetta.dart';
 import 'app_theme.dart';
 import 'info_card.dart';
-import 'pic_box.dart';
+import 'app_image.dart';
 
 class RoshettaTile extends StatelessWidget {
   const RoshettaTile({super.key, required this.roshetta, this.onTap});
@@ -31,7 +31,12 @@ class RoshettaTile extends StatelessWidget {
               ],
             ),
           ),
-          PicBox(label: context.tr('Pic'), width: 46, height: 46),
+          AppImage(
+            imageId: roshetta.pictureId,
+            placeholder: context.tr('Pic'),
+            width: 46,
+            height: 46,
+          ),
         ],
       ),
     );

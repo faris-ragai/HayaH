@@ -71,10 +71,11 @@ class AuthService extends ChangeNotifier {
     required String name,
     required String id,
     required String password,
+    String? picture,
   }) {
     final error = _validate(name, id, password);
     if (error != null) return error;
-    final patient = Patient(name: name.trim(), nationalId: id.trim());
+    final patient = Patient(name: name.trim(), nationalId: id.trim(), picture: picture);
     _db.patients.add(patient);
     _initRecords(patient.nationalId, password);
     currentUser = patient;
@@ -90,6 +91,7 @@ class AuthService extends ChangeNotifier {
     required String specialty,
     required String licenseNumber,
     required String password,
+    String? picture,
   }) {
     final error = _validate(name, id, password);
     if (error != null) return error;
@@ -101,6 +103,7 @@ class AuthService extends ChangeNotifier {
       nationalId: id.trim(),
       specialty: specialty.trim(),
       licenseNumber: licenseNumber.trim(),
+      picture: picture,
     );
     _db.doctors.add(doctor);
     _initRecords(doctor.nationalId, password);
@@ -122,6 +125,15 @@ class AuthService extends ChangeNotifier {
     final u = currentUser;
     if (u == null || name.trim().isEmpty) return;
     u.name = name.trim();
+    _db.save();
+    notifyListeners();
+  }
+
+  /// A user can only change their own picture.
+  void updatePicture(String? id) {
+    final u = currentUser;
+    if (u == null) return;
+    u.picture = id;
     _db.save();
     notifyListeners();
   }

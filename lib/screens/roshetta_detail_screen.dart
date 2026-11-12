@@ -5,7 +5,7 @@ import '../service/localization_service.dart';
 import '../model/roshetta.dart';
 import '../widgets/app_theme.dart';
 import '../widgets/info_card.dart';
-import '../widgets/pic_box.dart';
+import '../widgets/app_image.dart';
 import '../widgets/screen_scaffold.dart';
 
 /// Read-only roshetta (the patient cannot edit it).
@@ -41,10 +41,17 @@ class RoshettaDetailScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          PicBox(
-            label: roshetta.hasPicture ? context.tr('[Roshetta picture]') : context.tr('[No picture]'),
-            height: 184,
-            radius: 14,
+          GestureDetector(
+            onTap: roshetta.hasPicture
+                ? () => showImageViewer(
+                    context, roshetta.pictureId, context.tr('[Roshetta picture]'))
+                : null,
+            child: AppImage(
+              imageId: roshetta.pictureId,
+              placeholder: context.tr('[No picture]'),
+              height: 184,
+              radius: 14,
+            ),
           ),
           kGap,
           _field(context.tr('Medicine name'), roshetta.medicine),

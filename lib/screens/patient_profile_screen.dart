@@ -7,6 +7,7 @@ import '../widgets/app_button.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/app_theme.dart';
 import '../widgets/avatar_circle.dart';
+import '../widgets/image_picker_sheet.dart';
 import '../widgets/screen_scaffold.dart';
 import 'settings_screen.dart';
 
@@ -36,6 +37,13 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
     super.dispose();
   }
 
+  Future<void> _changePicture() async {
+    final id = await pickImageWithSheet(context);
+    if (id == null) return;
+    AuthService.instance.updatePicture(id);
+    if (mounted) setState(() {});
+  }
+
   void _save() {
     AuthService.instance.updateName(_name.text);
     FocusScope.of(context).unfocus();
@@ -53,14 +61,12 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Center(child: AvatarCircle(initials: patient.initials)),
+          Center(child: AvatarCircle(initials: patient.initials, imageId: patient.picture)),
           kGap,
           AppButton(
             label: context.tr('Change picture'),
             primary: false,
-            onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(context.tr('Picture picker is not connected in this UI version'))),
-            ),
+            onPressed: _changePicture,
           ),
           kGap,
           AppTextField(label: context.tr('Name'), controller: _name),

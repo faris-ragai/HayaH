@@ -4,6 +4,7 @@ import 'screens/doctor_shell_screen.dart';
 import 'screens/patient_shell_screen.dart';
 import 'screens/welcome_screen.dart';
 import 'service/auth_service.dart';
+import 'service/image_service.dart';
 import 'service/mock_database.dart';
 import 'service/settings_service.dart';
 import 'widgets/app_theme.dart';
@@ -12,6 +13,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MockDatabase.instance.load(); // saved data (or demo data the first time)
   await SettingsService.instance.load();
+  await ImageService.instance.load();
 
   // Stay logged in: go straight to the home tabs if someone was logged in.
   final auth = AuthService.instance;

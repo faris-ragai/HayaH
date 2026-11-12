@@ -5,7 +5,7 @@ class Roshetta {
     required this.doctorName,
     required this.description,
     required this.date,
-    this.hasPicture = false,
+    this.pictureId,
   });
 
   final int id;
@@ -13,7 +13,11 @@ class Roshetta {
   final String doctorName;
   final String description;
   final DateTime date;
-  final bool hasPicture;
+
+  /// Picture saved by ImageService (null = no picture).
+  final String? pictureId;
+
+  bool get hasPicture => pictureId != null;
 
   Map<String, dynamic> toJson() => {
         'id': id,
@@ -21,7 +25,7 @@ class Roshetta {
         'doctorName': doctorName,
         'description': description,
         'date': date.toIso8601String(),
-        'hasPicture': hasPicture,
+        'pictureId': pictureId,
       };
 
   factory Roshetta.fromJson(Map<String, dynamic> j) => Roshetta(
@@ -30,6 +34,6 @@ class Roshetta {
         doctorName: j['doctorName'] as String,
         description: j['description'] as String,
         date: DateTime.parse(j['date'] as String),
-        hasPicture: (j['hasPicture'] as bool?) ?? false,
+        pictureId: j['pictureId'] as String?,
       );
 }

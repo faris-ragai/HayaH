@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
+import '../service/image_service.dart';
 import 'app_theme.dart';
 
+/// Round picture; shows the initials when there is no picture.
 class AvatarCircle extends StatelessWidget {
-  const AvatarCircle({super.key, required this.initials, this.size = 66});
+  const AvatarCircle({super.key, required this.initials, this.size = 66, this.imageId});
 
   final String initials;
   final double size;
+  final String? imageId;
 
   @override
   Widget build(BuildContext context) {
+    final bytes = ImageService.instance.bytes(imageId);
+    if (bytes != null) {
+      return ClipOval(
+        child: Image.memory(bytes, width: size, height: size, fit: BoxFit.cover),
+      );
+    }
     return Container(
       width: size,
       height: size,

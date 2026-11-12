@@ -40,9 +40,16 @@ Welcome -> Login -> (Create account -> New patient <-> New doctor)
 ## Languages
 Arabic (right-to-left, default) and English. All screen texts are in `lib/service/localization_service.dart`: use `context.tr('English text')`. Switch from the Welcome screen or Settings.
 
+## Pictures
+Real pictures from the gallery (and the camera on phones): profile pictures,
+roshetta photos, lab results and X-rays, with a zoomable full-screen viewer.
+Pictures are shrunk and saved on the device. Needs the `image_picker` package.
+- iOS: add `NSPhotoLibraryUsageDescription` and `NSCameraUsageDescription` to `ios/Runner/Info.plist`.
+- Android: nothing to add.
+
 ## Saved data
 Data is saved on the device (shared_preferences) and you stay logged in. To reset to the demo data, clear the app data or uninstall.
 
 ## Not done on purpose
-Real QR/camera, picture picker, real sync.
+Real QR/camera scanner, real sync.
 Names and notes typed by users (e.g. "Dr. Omar Hassan", "Blood pressure checked") are data, so they stay in the language they were written in.

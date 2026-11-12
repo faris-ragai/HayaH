@@ -1,7 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/history_log_item.dart';
 import '../model/medical_entry.dart';
+import '../model/report_item.dart';
 import '../model/roshetta.dart';
 import '../model/user.dart';
 
@@ -23,7 +26,7 @@ class MockDatabase {
   final Map<String, List<MedicalEntry>> entries = {};
   final Map<String, List<Roshetta>> roshettas = {};
   final Map<String, List<HistoryLogItem>> logs = {};
-  final Map<String, List<String>> reports = {};
+  final Map<String, List<ReportItem>> reports = {};
   int nextRoshettaId = 100;
   int nextEntryId = 1;
 
@@ -88,7 +91,7 @@ class MockDatabase {
         'entries': entries.map((k, v) => MapEntry(k, v.map((e) => e.toJson()).toList())),
         'roshettas': roshettas.map((k, v) => MapEntry(k, v.map((e) => e.toJson()).toList())),
         'logs': logs.map((k, v) => MapEntry(k, v.map((e) => e.toJson()).toList())),
-        'reports': reports,
+        'reports': reports.map((k, v) => MapEntry(k, v.map((e) => e.toJson()).toList())),
         'nextRoshettaId': nextRoshettaId,
         'nextEntryId': nextEntryId,
       };
@@ -120,7 +123,7 @@ class MockDatabase {
           .toList();
     });
     (j['reports'] as Map).forEach((k, v) {
-      reports[k as String] = List<String>.from(v as List);
+      reports[k as String] = (v as List).map((e) => ReportItem.fromJson(e)).toList();
     });
     nextRoshettaId = j['nextRoshettaId'] as int;
     nextEntryId = j['nextEntryId'] as int;
@@ -200,7 +203,6 @@ class MockDatabase {
         doctorName: omar.displayName,
         description: 'Take one capsule every 8 hours for 7 days.',
         date: DateTime(2026, 10, 12),
-        hasPicture: true,
       ),
       Roshetta(
         id: 2,
@@ -208,7 +210,6 @@ class MockDatabase {
         doctorName: mona.displayName,
         description: 'Take one tablet after breakfast.',
         date: DateTime(2026, 9, 3),
-        hasPicture: true,
       ),
       Roshetta(
         id: 3,
@@ -224,7 +225,10 @@ class MockDatabase {
       HistoryLogItem(action: 'Edited allergies', doctorName: mona.displayName, date: DateTime(2026, 9, 3)),
       HistoryLogItem(action: 'Uploaded lab result', doctorName: mona.displayName, date: DateTime(2026, 9, 3)),
     ];
-    reports[sara.nationalId] = ['Lab result', 'X-ray'];
+    reports[sara.nationalId] = [
+      ReportItem(label: 'Lab result'),
+      ReportItem(label: 'X-ray'),
+    ];
 
     entries[youssef.nationalId] = [
       MedicalEntry(

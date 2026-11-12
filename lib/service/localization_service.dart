@@ -165,6 +165,9 @@ const Map<String, String> _ar = {
   'Save roshetta': 'حفظ الروشتة',
   'Enter the medicine name': 'اكتب اسم الدواء',
   '[Picture added]': '[تمت إضافة الصورة]',
+  'Take a photo': 'التقاط صورة',
+  'Choose from gallery': 'اختيار من المعرض',
+  'Choose the type': 'اختر النوع',
   // Values that come from data (entry types, reports, history log actions)
   'Note': 'ملاحظة',
   'Diagnosis': 'تشخيص',

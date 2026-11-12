@@ -7,6 +7,7 @@ import '../widgets/app_button.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/app_theme.dart';
 import '../widgets/avatar_circle.dart';
+import '../widgets/image_picker_sheet.dart';
 import '../widgets/screen_scaffold.dart';
 import 'settings_screen.dart';
 
@@ -42,6 +43,13 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
     super.dispose();
   }
 
+  Future<void> _changePicture() async {
+    final id = await pickImageWithSheet(context);
+    if (id == null) return;
+    AuthService.instance.updatePicture(id);
+    if (mounted) setState(() {});
+  }
+
   void _save() {
     AuthService.instance.updateDoctor(
       name: _name.text,
@@ -63,7 +71,13 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Center(child: AvatarCircle(initials: doctor.initials)),
+          Center(child: AvatarCircle(initials: doctor.initials, imageId: doctor.picture)),
+          kGap,
+          AppButton(
+            label: context.tr('Change picture'),
+            primary: false,
+            onPressed: _changePicture,
+          ),
           kGap,
           AppTextField(label: context.tr('Name'), controller: _name),
           kGap,

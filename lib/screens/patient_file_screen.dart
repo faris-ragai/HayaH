@@ -5,6 +5,7 @@ import '../service/localization_service.dart';
 import '../model/user.dart';
 import '../service/patient_service.dart';
 import '../widgets/app_button.dart';
+import '../widgets/avatar_circle.dart';
 import '../widgets/app_theme.dart';
 import '../widgets/entry_card.dart';
 import '../widgets/info_card.dart';
@@ -29,15 +30,7 @@ class PatientFileScreen extends StatelessWidget {
         final entries = service.entries(patient.nationalId);
         return ScreenScaffold(
           title: patient.name,
-          trailing: Container(
-            width: 30,
-            height: 30,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(color: AppColors.tint, shape: BoxShape.circle),
-            child: Text(patient.initials,
-                style: TextStyle(
-                    fontSize: 10.5, fontWeight: FontWeight.w700, color: AppColors.green)),
-          ),
+          trailing: AvatarCircle(initials: patient.initials, size: 30, imageId: patient.picture),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

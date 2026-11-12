@@ -26,7 +26,7 @@ class User {
   /// The QR code is generated from the national ID.
   String get qrData => nationalId;
 
-  Map<String, dynamic> toJson() => {'name': name, 'nationalId': nationalId};
+  Map<String, dynamic> toJson() => {'name': name, 'nationalId': nationalId, 'picture': picture};
 }
 
 class Patient extends User {
@@ -46,6 +46,7 @@ class Patient extends User {
   factory Patient.fromJson(Map<String, dynamic> j) => Patient(
         name: j['name'] as String,
         nationalId: j['nationalId'] as String,
+        picture: j['picture'] as String?,
         allergies: (j['allergies'] as String?) ?? '',
       );
 }
@@ -73,6 +74,7 @@ class Doctor extends User {
         name: j['name'] as String,
         nationalId: j['nationalId'] as String,
         specialty: (j['specialty'] as String?) ?? '',
+        picture: j['picture'] as String?,
         licenseNumber: (j['licenseNumber'] as String?) ?? '',
       );
 

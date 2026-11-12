@@ -74,7 +74,7 @@ class _SearchScreenState extends State<SearchScreen> {
               onTap: () => openPatient(context, p),
               child: Row(
                 children: [
-                  AvatarCircle(initials: p.initials, size: 52),
+                  AvatarCircle(initials: p.initials, size: 52, imageId: p.picture),
                   SizedBox(width: 12),
                   Expanded(
                     child: Column(

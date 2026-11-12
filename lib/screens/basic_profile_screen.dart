@@ -23,7 +23,7 @@ class BasicProfileScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(height: 14),
-          Center(child: AvatarCircle(initials: patient.initials)),
+          Center(child: AvatarCircle(initials: patient.initials, imageId: patient.picture)),
           SizedBox(height: 10),
           Text(patient.name,
               textAlign: TextAlign.center,

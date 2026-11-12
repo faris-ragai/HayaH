@@ -23,6 +23,7 @@ class _RegisterDoctorScreenState extends State<RegisterDoctorScreen> {
   final _specialty = TextEditingController();
   final _license = TextEditingController();
   final _password = TextEditingController();
+  String? _picture;
 
   @override
   void dispose() {
@@ -41,6 +42,7 @@ class _RegisterDoctorScreenState extends State<RegisterDoctorScreen> {
       specialty: _specialty.text,
       licenseNumber: _license.text,
       password: _password.text,
+      picture: _picture,
     );
     if (error != null) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.tr(error))));
@@ -56,7 +58,7 @@ class _RegisterDoctorScreenState extends State<RegisterDoctorScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          PicturePickerRow(),
+          PicturePickerRow(onChanged: (id) => _picture = id),
           kGap,
           AppTextField(label: context.tr('Full name'), controller: _name),
           kGap,

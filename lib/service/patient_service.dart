@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import '../model/date_format.dart';
 import '../model/history_log_item.dart';
 import '../model/medical_entry.dart';
+import '../model/report_item.dart';
 import '../model/roshetta.dart';
 import '../model/user.dart';
 import 'mock_database.dart';
@@ -119,7 +120,7 @@ class PatientService extends ChangeNotifier {
     required String medicine,
     required String doctorName,
     required String description,
-    required bool hasPicture,
+    String? pictureId,
   }) {
     _db.roshettas.putIfAbsent(patient.nationalId, () => []).add(Roshetta(
           id: _db.nextRoshettaId++,
@@ -127,7 +128,7 @@ class PatientService extends ChangeNotifier {
           doctorName: doctorName,
           description: description,
           date: DateTime.now(),
-          hasPicture: hasPicture,
+          pictureId: pictureId,
         ));
     _log(patient.nationalId, 'Added roshetta', doctor);
     _db.save();
@@ -162,13 +163,20 @@ class PatientService extends ChangeNotifier {
   }
 
   // ---------- reports (lab results / X-rays) ----------
-  List<String> reports(String patientId) =>
-      List.unmodifiable(_db.reports[patientId] ?? const <String>[]);
+  List<ReportItem> reports(String patientId) =>
+      List.unmodifiable(_db.reports[patientId] ?? const <ReportItem>[]);
 
-  void addReport(Patient patient, Doctor doctor) {
-    final list = _db.reports.putIfAbsent(patient.nationalId, () => []);
-    list.add(list.length.isEven ? 'Lab result' : 'X-ray');
-    _log(patient.nationalId, 'Uploaded ${list.last.toLowerCase()}', doctor);
+  /// [label] is "Lab result" or "X-ray"; [imageId] comes from ImageService.
+  void addReport(
+    Patient patient,
+    Doctor doctor, {
+    required String label,
+    String? imageId,
+  }) {
+    _db.reports
+        .putIfAbsent(patient.nationalId, () => [])
+        .add(ReportItem(label: label, imageId: imageId));
+    _log(patient.nationalId, 'Uploaded ${label.toLowerCase()}', doctor);
     _db.save();
     notifyListeners();
   }

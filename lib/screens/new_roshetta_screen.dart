@@ -8,7 +8,8 @@ import '../service/patient_service.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/app_theme.dart';
-import '../widgets/pic_box.dart';
+import '../widgets/app_image.dart';
+import '../widgets/image_picker_sheet.dart';
 import '../widgets/screen_scaffold.dart';
 
 class NewRoshettaScreen extends StatefulWidget {
@@ -24,7 +25,7 @@ class _NewRoshettaScreenState extends State<NewRoshettaScreen> {
   final _medicine = TextEditingController();
   final _description = TextEditingController();
   late final TextEditingController _doctorName;
-  bool _hasPicture = false;
+  String? _pictureId;
 
   @override
   void initState() {
@@ -42,6 +43,15 @@ class _NewRoshettaScreenState extends State<NewRoshettaScreen> {
     super.dispose();
   }
 
+  Future<void> _togglePicture() async {
+    if (_pictureId != null) {
+      setState(() => _pictureId = null);
+      return;
+    }
+    final id = await pickImageWithSheet(context);
+    if (id != null && mounted) setState(() => _pictureId = id);
+  }
+
   void _save() {
     final doctor = AuthService.instance.currentDoctor;
     if (doctor == null) return;
@@ -56,7 +66,7 @@ class _NewRoshettaScreenState extends State<NewRoshettaScreen> {
       medicine: _medicine.text.trim(),
       doctorName: _doctorName.text.trim().isEmpty ? doctor.displayName : _doctorName.text.trim(),
       description: _description.text.trim(),
-      hasPicture: _hasPicture,
+      pictureId: _pictureId,
     );
     Navigator.of(context).pop();
   }
@@ -74,16 +84,17 @@ class _NewRoshettaScreenState extends State<NewRoshettaScreen> {
           kGap,
           AppTextField(label: context.tr('Description'), controller: _description, maxLines: 5),
           kGap,
-          PicBox(
-            label: _hasPicture ? context.tr('[Picture added]') : context.tr('[Roshetta picture]'),
-            height: 76,
+          AppImage(
+            imageId: _pictureId,
+            placeholder: context.tr('[Roshetta picture]'),
+            height: _pictureId == null ? 76 : 200,
             radius: 14,
           ),
           kGap,
           AppButton(
-            label: _hasPicture ? context.tr('Remove picture') : context.tr('Add picture'),
+            label: _pictureId != null ? context.tr('Remove picture') : context.tr('Add picture'),
             primary: false,
-            onPressed: () => setState(() => _hasPicture = !_hasPicture),
+            onPressed: _togglePicture,
           ),
           kGap,
           AppButton(label: context.tr('Save roshetta'), onPressed: _save),
