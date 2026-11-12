@@ -1,16 +1,18 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import '../service/localization_service.dart';
 import '../model/user.dart';
 import '../service/auth_service.dart';
+import '../service/localization_service.dart';
 import '../service/patient_service.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_image.dart';
 import '../widgets/app_theme.dart';
+import '../widgets/empty_message.dart';
 import '../widgets/image_picker_sheet.dart';
 import '../widgets/info_card.dart';
 import '../widgets/pill.dart';
+import '../widgets/report_type_sheet.dart';
 import '../widgets/screen_scaffold.dart';
 
 /// Lab results and X-rays. Only a doctor can upload (canUpload = true).
@@ -24,34 +26,7 @@ class ReportsScreen extends StatelessWidget {
   Future<void> _upload(BuildContext context) async {
     final doctor = AuthService.instance.currentDoctor;
     if (doctor == null) return;
-    final label = await showModalBottomSheet<String>(
-      context: context,
-      backgroundColor: AppColors.bg,
-      builder: (sheetContext) => SafeArea(
-        child: Padding(
-          padding: EdgeInsets.all(14),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text(context.tr('Choose the type'), style: AppText.title),
-              SizedBox(height: 10),
-              AppButton(
-                label: context.tr('Lab result'),
-                primary: false,
-                onPressed: () => Navigator.of(sheetContext).pop('Lab result'),
-              ),
-              kGap,
-              AppButton(
-                label: context.tr('X-ray'),
-                primary: false,
-                onPressed: () => Navigator.of(sheetContext).pop('X-ray'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+    final label = await showReportTypeSheet(context);
     if (label == null || !context.mounted) return;
     final imageId = await pickImageWithSheet(context);
     if (imageId == null) return;
@@ -77,12 +52,7 @@ class ReportsScreen extends StatelessWidget {
                 ),
                 kGap,
               ],
-              if (reports.isEmpty)
-                Padding(
-                  padding: EdgeInsets.all(24),
-                  child: Text(context.tr('No reports yet.'),
-                      textAlign: TextAlign.center, style: AppText.sub),
-                ),
+              if (reports.isEmpty) EmptyMessage(context.tr('No reports yet.')),
               GridView.count(
                 crossAxisCount: 2,
                 mainAxisSpacing: 10,
@@ -92,8 +62,8 @@ class ReportsScreen extends StatelessWidget {
                 children: [
                   for (final r in reports)
                     GestureDetector(
-                      onTap: () => showImageViewer(
-                          context, r.imageId, '[${context.tr(r.label)}]'),
+                      onTap: () =>
+                          showImageViewer(context, r.imageId, '[${context.tr(r.label)}]'),
                       child: Stack(
                         fit: StackFit.expand,
                         children: [

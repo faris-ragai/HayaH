@@ -1,11 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import '../service/localization_service.dart';
 import '../model/date_format.dart';
 import '../model/user.dart';
+import '../service/localization_service.dart';
 import '../service/patient_service.dart';
 import '../widgets/app_theme.dart';
+import '../widgets/empty_message.dart';
 import '../widgets/info_card.dart';
 import '../widgets/screen_scaffold.dart';
 
@@ -27,12 +28,7 @@ class HistoryLogScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (items.isEmpty)
-                Padding(
-                  padding: EdgeInsets.all(24),
-                  child: Text(context.tr('Nothing here yet.'),
-                      textAlign: TextAlign.center, style: AppText.sub),
-                ),
+              if (items.isEmpty) EmptyMessage(context.tr('Nothing here yet.')),
               for (final item in items) ...[
                 InfoCard(
                   child: Column(

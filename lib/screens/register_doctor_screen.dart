@@ -1,11 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import '../service/localization_service.dart';
 import '../service/auth_service.dart';
+import '../service/localization_service.dart';
 import '../widgets/app_button.dart';
+import '../widgets/app_snack.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/app_theme.dart';
+import '../widgets/national_id_field.dart';
+import '../widgets/password_field.dart';
 import '../widgets/picture_picker_row.dart';
 import '../widgets/screen_scaffold.dart';
 import 'app_router.dart';
@@ -45,7 +48,7 @@ class _RegisterDoctorScreenState extends State<RegisterDoctorScreen> {
       picture: _picture,
     );
     if (error != null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.tr(error))));
+      showSnack(context, context.tr(error));
       return;
     }
     goToHome(context);
@@ -62,19 +65,13 @@ class _RegisterDoctorScreenState extends State<RegisterDoctorScreen> {
           kGap,
           AppTextField(label: context.tr('Full name'), controller: _name),
           kGap,
-          AppTextField(
-            label: context.tr('National ID (your user ID)'),
-            hint: context.tr('14 digits'),
-            controller: _id,
-            keyboardType: TextInputType.number,
-            maxLength: 14,
-          ),
+          NationalIdField(controller: _id, label: 'National ID (your user ID)'),
           kGap,
           AppTextField(label: context.tr('Specialty'), controller: _specialty),
           kGap,
           AppTextField(label: context.tr('License number'), controller: _license),
           kGap,
-          AppTextField(label: context.tr('Password'), controller: _password, obscure: true),
+          PasswordField(controller: _password),
           kGap,
           AppButton(label: context.tr('Create doctor account'), onPressed: _create),
         ],

@@ -1,12 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import '../service/localization_service.dart';
 import '../service/auth_service.dart';
+import '../service/localization_service.dart';
 import '../service/patient_service.dart';
 import '../widgets/app_theme.dart';
+import '../widgets/empty_message.dart';
 import '../widgets/roshetta_tile.dart';
 import '../widgets/screen_scaffold.dart';
+import 'app_router.dart';
 import 'roshetta_detail_screen.dart';
 
 class MyRoshettasScreen extends StatelessWidget {
@@ -27,18 +29,11 @@ class MyRoshettasScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (list.isEmpty)
-                Padding(
-                  padding: EdgeInsets.all(24),
-                  child: Text(context.tr('No roshettas yet.'),
-                      textAlign: TextAlign.center, style: AppText.sub),
-                ),
+              if (list.isEmpty) EmptyMessage(context.tr('No roshettas yet.')),
               for (final r in list) ...[
                 RoshettaTile(
                   roshetta: r,
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => RoshettaDetailScreen(roshetta: r)),
-                  ),
+                  onTap: () => pushScreen(context, RoshettaDetailScreen(roshetta: r)),
                 ),
                 kGap,
               ],

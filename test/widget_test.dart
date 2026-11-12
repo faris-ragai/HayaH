@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:doctor_patient_app/main.dart';
+import 'package:doctor_patient_app/screens/my_app.dart';
 import 'package:doctor_patient_app/service/settings_service.dart';
 
 void main() {

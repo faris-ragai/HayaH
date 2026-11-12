@@ -1,14 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import '../service/localization_service.dart';
 import '../service/auth_service.dart';
+import '../service/localization_service.dart';
 import '../service/patient_service.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/app_theme.dart';
 import '../widgets/info_card.dart';
 import '../widgets/pill.dart';
+import '../widgets/row_card.dart';
 import '../widgets/screen_scaffold.dart';
 import 'app_router.dart';
 import 'scan_qr_screen.dart';
@@ -34,16 +35,12 @@ class DoctorHomeScreen extends StatelessWidget {
               AppTextField(
                 label: context.tr('Search patient'),
                 hint: context.tr('National ID or name'),
-                onSubmitted: (text) => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => SearchScreen(initialQuery: text)),
-                ),
+                onSubmitted: (text) => pushScreen(context, SearchScreen(initialQuery: text)),
               ),
               kGap,
               AppButton(
                 label: context.tr('Scan patient QR'),
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => ScanQrScreen()),
-                ),
+                onPressed: () => pushScreen(context, ScanQrScreen()),
               ),
               kGap,
               InfoCard(
@@ -67,14 +64,9 @@ class DoctorHomeScreen extends StatelessWidget {
                 ),
               ),
               kGap,
-              InfoCard(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(context.tr('My roshettas today'), style: AppText.title),
-                    Pill(text: '${service.roshettasTodayBy(doctor)}'),
-                  ],
-                ),
+              RowCard(
+                title: context.tr('My roshettas today'),
+                trailing: Pill(text: '${service.roshettasTodayBy(doctor)}'),
               ),
             ],
           ),

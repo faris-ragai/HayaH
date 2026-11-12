@@ -29,11 +29,6 @@ class AppTextField extends StatelessWidget {
   final ValueChanged<String>? onSubmitted;
   final Widget? suffix;
 
-  OutlineInputBorder _border() => OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: const BorderSide(color: AppColors.fieldBorder),
-      );
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -62,12 +57,9 @@ class AppTextField extends StatelessWidget {
             suffixIcon: suffix,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 13, vertical: 12),
-            border: _border(),
-            enabledBorder: _border(),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: AppColors.green, width: 1.4),
-            ),
+            border: appFieldBorder(),
+            enabledBorder: appFieldBorder(),
+            focusedBorder: appFieldBorder(AppColors.green, 1.4),
           ),
         ),
       ],

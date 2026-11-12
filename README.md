@@ -25,7 +25,7 @@ Scan QR has no camera: tap the camera box to simulate a scan.
 ## Folders
 - `lib/model`   : User / Patient / Doctor (inheritance), MedicalEntry, Roshetta, HistoryLogItem, SyncStatus
 - `lib/service` : mock_database, auth_service, patient_service, settings_service
-- `lib/widgets` : theme, ScreenScaffold (green header), buttons, fields, cards, bottom nav, QR placeholder
+- `lib/widgets` : small reusable pieces (header, buttons, fields, cards, sheets, AllergiesCard, ButtonRow, RowCard, EmptyMessage...)
 - `lib/screens` : one file per screen + `app_router.dart` (goToHome, openPatient)
 
 ## Flow

@@ -21,6 +21,13 @@ class AppText {
   static const note = TextStyle(fontSize: 11.5, color: AppColors.muted, height: 1.45);
 }
 
+/// Rounded border used by every text field and dropdown.
+OutlineInputBorder appFieldBorder([Color color = AppColors.fieldBorder, double width = 1]) =>
+    OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: color, width: width),
+    );
+
 /// Vertical gap used between cards and fields.
 const kGap = SizedBox(height: 11);
 

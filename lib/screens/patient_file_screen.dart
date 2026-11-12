@@ -1,16 +1,19 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import '../service/localization_service.dart';
 import '../model/user.dart';
+import '../service/localization_service.dart';
 import '../service/patient_service.dart';
+import '../widgets/allergies_card.dart';
 import '../widgets/app_button.dart';
-import '../widgets/avatar_circle.dart';
 import '../widgets/app_theme.dart';
+import '../widgets/avatar_circle.dart';
+import '../widgets/button_row.dart';
 import '../widgets/entry_card.dart';
-import '../widgets/info_card.dart';
+import '../widgets/note_text.dart';
 import '../widgets/screen_scaffold.dart';
 import 'add_medical_info_screen.dart';
+import 'app_router.dart';
 import 'history_log_screen.dart';
 import 'new_roshetta_screen.dart';
 import 'reports_screen.dart';
@@ -34,42 +37,18 @@ class PatientFileScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              InfoCard(
-                tint: true,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(context.tr('Allergies and chronic diseases'), style: AppText.title),
-                    SizedBox(height: 5),
-                    Text(patient.allergies.isEmpty ? context.tr('None recorded') : patient.allergies,
-                        style: AppText.value),
-                  ],
-                ),
-              ),
+              AllergiesCard(patient: patient),
               kGap,
-              Row(
+              ButtonRow(
                 children: [
-                  Expanded(
-                    child: AppButton(
-                      label: context.tr('Add info'),
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => AddMedicalInfoScreen(patient: patient),
-                        ),
-                      ),
-                    ),
+                  AppButton(
+                    label: context.tr('Add info'),
+                    onPressed: () => pushScreen(context, AddMedicalInfoScreen(patient: patient)),
                   ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: AppButton(
-                      label: context.tr('New roshetta'),
-                      primary: false,
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => NewRoshettaScreen(patient: patient),
-                        ),
-                      ),
-                    ),
+                  AppButton(
+                    label: context.tr('New roshetta'),
+                    primary: false,
+                    onPressed: () => pushScreen(context, NewRoshettaScreen(patient: patient)),
                   ),
                 ],
               ),
@@ -77,44 +56,28 @@ class PatientFileScreen extends StatelessWidget {
                 kGap,
                 EntryCard(
                   entry: e,
-                  onTap: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => AddMedicalInfoScreen(patient: patient, entry: e),
-                    ),
-                  ),
+                  onTap: () =>
+                      pushScreen(context, AddMedicalInfoScreen(patient: patient, entry: e)),
                 ),
               ],
               kGap,
-              Row(
+              ButtonRow(
                 children: [
-                  Expanded(
-                    child: AppButton(
-                      label: context.tr('Reports'),
-                      primary: false,
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => ReportsScreen(patient: patient, canUpload: true),
-                        ),
-                      ),
-                    ),
+                  AppButton(
+                    label: context.tr('Reports'),
+                    primary: false,
+                    onPressed: () =>
+                        pushScreen(context, ReportsScreen(patient: patient, canUpload: true)),
                   ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: AppButton(
-                      label: context.tr('History log'),
-                      primary: false,
-                      onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => HistoryLogScreen(patient: patient),
-                        ),
-                      ),
-                    ),
+                  AppButton(
+                    label: context.tr('History log'),
+                    primary: false,
+                    onPressed: () => pushScreen(context, HistoryLogScreen(patient: patient)),
                   ),
                 ],
               ),
               SizedBox(height: 10),
-              Text(context.tr('Tap an entry to edit it.'),
-                  textAlign: TextAlign.center, style: AppText.note),
+              NoteText(context.tr('Tap an entry to edit it.')),
             ],
           ),
         );

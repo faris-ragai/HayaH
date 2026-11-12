@@ -1,14 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import '../service/localization_service.dart';
 import '../service/auth_service.dart';
+import '../service/localization_service.dart';
 import '../widgets/app_button.dart';
+import '../widgets/app_snack.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/app_theme.dart';
-import '../widgets/avatar_circle.dart';
 import '../widgets/image_picker_sheet.dart';
+import '../widgets/profile_picture_block.dart';
 import '../widgets/screen_scaffold.dart';
+import 'app_router.dart';
 import 'settings_screen.dart';
 
 class DoctorProfileScreen extends StatefulWidget {
@@ -57,9 +59,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
       licenseNumber: _license.text,
     );
     FocusScope.of(context).unfocus();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(context.tr('Profile saved'))),
-    );
+    showSnack(context, context.tr('Profile saved'));
   }
 
   @override
@@ -71,12 +71,10 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Center(child: AvatarCircle(initials: doctor.initials, imageId: doctor.picture)),
-          kGap,
-          AppButton(
-            label: context.tr('Change picture'),
-            primary: false,
-            onPressed: _changePicture,
+          ProfilePictureBlock(
+            initials: doctor.initials,
+            imageId: doctor.picture,
+            onChange: _changePicture,
           ),
           kGap,
           AppTextField(label: context.tr('Name'), controller: _name),
@@ -92,9 +90,7 @@ class _DoctorProfileScreenState extends State<DoctorProfileScreen> {
           AppButton(
             label: context.tr('Settings'),
             primary: false,
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => SettingsScreen()),
-            ),
+            onPressed: () => pushScreen(context, SettingsScreen()),
           ),
         ],
       ),

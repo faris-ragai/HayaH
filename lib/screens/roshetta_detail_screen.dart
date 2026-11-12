@@ -1,11 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import '../service/localization_service.dart';
 import '../model/roshetta.dart';
-import '../widgets/app_theme.dart';
-import '../widgets/info_card.dart';
+import '../service/localization_service.dart';
 import '../widgets/app_image.dart';
+import '../widgets/app_theme.dart';
+import '../widgets/label_value_card.dart';
+import '../widgets/note_text.dart';
 import '../widgets/screen_scaffold.dart';
 
 /// Read-only roshetta (the patient cannot edit it).
@@ -13,26 +14,6 @@ class RoshettaDetailScreen extends StatelessWidget {
   const RoshettaDetailScreen({super.key, required this.roshetta});
 
   final Roshetta roshetta;
-
-  Widget _field(String label, String value, {bool bold = true}) {
-    return InfoCard(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label, style: AppText.label),
-          SizedBox(height: 4),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 14,
-              color: AppColors.ink,
-              fontWeight: bold ? FontWeight.w700 : FontWeight.w400,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,14 +35,15 @@ class RoshettaDetailScreen extends StatelessWidget {
             ),
           ),
           kGap,
-          _field(context.tr('Medicine name'), roshetta.medicine),
+          LabelValueCard(
+              label: context.tr('Medicine name'), value: roshetta.medicine, bold: true),
           kGap,
-          _field(context.tr('Doctor name'), roshetta.doctorName),
+          LabelValueCard(
+              label: context.tr('Doctor name'), value: roshetta.doctorName, bold: true),
           kGap,
-          _field(context.tr('Description'), roshetta.description, bold: false),
+          LabelValueCard(label: context.tr('Description'), value: roshetta.description),
           SizedBox(height: 10),
-          Text(context.tr('Read only. Only the doctor can write roshettas.'),
-              style: AppText.note),
+          NoteText(context.tr('Read only. Only the doctor can write roshettas.'), center: false),
         ],
       ),
     );

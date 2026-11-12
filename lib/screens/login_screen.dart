@@ -1,11 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import '../service/localization_service.dart';
 import '../service/auth_service.dart';
+import '../service/localization_service.dart';
 import '../widgets/app_button.dart';
-import '../widgets/app_text_field.dart';
+import '../widgets/app_snack.dart';
 import '../widgets/app_theme.dart';
+import '../widgets/national_id_field.dart';
+import '../widgets/password_field.dart';
 import '../widgets/screen_scaffold.dart';
 import 'app_router.dart';
 import 'register_patient_screen.dart';
@@ -31,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void _login() {
     final error = AuthService.instance.login(_id.text, _password.text);
     if (error != null) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(context.tr(error))));
+      showSnack(context, context.tr(error));
       return;
     }
     goToHome(context);
@@ -44,24 +46,16 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          AppTextField(
-            label: context.tr('National ID'),
-            hint: context.tr('14 digits'),
-            controller: _id,
-            keyboardType: TextInputType.number,
-            maxLength: 14,
-          ),
+          NationalIdField(controller: _id),
           kGap,
-          AppTextField(label: context.tr('Password'), controller: _password, obscure: true),
+          PasswordField(controller: _password),
           kGap,
           AppButton(label: context.tr('Login'), onPressed: _login),
           kGap,
           AppButton(
             label: context.tr('Create account'),
             primary: false,
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => RegisterPatientScreen()),
-            ),
+            onPressed: () => pushScreen(context, RegisterPatientScreen()),
           ),
           SizedBox(height: 14),
           Text(

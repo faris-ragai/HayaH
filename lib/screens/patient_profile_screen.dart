@@ -1,14 +1,17 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import '../service/localization_service.dart';
 import '../service/auth_service.dart';
+import '../service/localization_service.dart';
 import '../widgets/app_button.dart';
+import '../widgets/app_snack.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/app_theme.dart';
-import '../widgets/avatar_circle.dart';
 import '../widgets/image_picker_sheet.dart';
+import '../widgets/note_text.dart';
+import '../widgets/profile_picture_block.dart';
 import '../widgets/screen_scaffold.dart';
+import 'app_router.dart';
 import 'settings_screen.dart';
 
 class PatientProfileScreen extends StatefulWidget {
@@ -47,9 +50,7 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
   void _save() {
     AuthService.instance.updateName(_name.text);
     FocusScope.of(context).unfocus();
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(context.tr('Profile saved'))),
-    );
+    showSnack(context, context.tr('Profile saved'));
   }
 
   @override
@@ -61,12 +62,10 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Center(child: AvatarCircle(initials: patient.initials, imageId: patient.picture)),
-          kGap,
-          AppButton(
-            label: context.tr('Change picture'),
-            primary: false,
-            onPressed: _changePicture,
+          ProfilePictureBlock(
+            initials: patient.initials,
+            imageId: patient.picture,
+            onChange: _changePicture,
           ),
           kGap,
           AppTextField(label: context.tr('Name'), controller: _name),
@@ -82,16 +81,10 @@ class _PatientProfileScreenState extends State<PatientProfileScreen> {
           AppButton(
             label: context.tr('Settings'),
             primary: false,
-            onPressed: () => Navigator.of(context).push(
-              MaterialPageRoute(builder: (_) => SettingsScreen()),
-            ),
+            onPressed: () => pushScreen(context, SettingsScreen()),
           ),
           SizedBox(height: 12),
-          Text(
-            context.tr('Only you can change your name and picture. Doctors cannot edit them.'),
-            textAlign: TextAlign.center,
-            style: AppText.note,
-          ),
+          NoteText(context.tr('Only you can change your name and picture. Doctors cannot edit them.')),
         ],
       ),
     );

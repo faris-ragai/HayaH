@@ -6,6 +6,7 @@ import '../service/patient_service.dart';
 import '../widgets/app_text_field.dart';
 import '../widgets/app_theme.dart';
 import '../widgets/avatar_circle.dart';
+import '../widgets/empty_message.dart';
 import '../widgets/info_card.dart';
 import '../widgets/pill.dart';
 import '../widgets/screen_scaffold.dart';
@@ -63,12 +64,7 @@ class _SearchScreenState extends State<SearchScreen> {
             ],
           ),
           kGap,
-          if (results.isEmpty)
-            Padding(
-              padding: EdgeInsets.all(24),
-              child: Text(context.tr('No patients found.'),
-                  textAlign: TextAlign.center, style: AppText.sub),
-            ),
+          if (results.isEmpty) EmptyMessage(context.tr('No patients found.')),
           for (final p in results) ...[
             InfoCard(
               onTap: () => openPatient(context, p),
@@ -82,7 +78,10 @@ class _SearchScreenState extends State<SearchScreen> {
                       children: [
                         Text(p.name, style: AppText.title),
                         SizedBox(height: 3),
-                        Text(context.tr('ID {id}...', {'id': p.nationalId.substring(0, 4)}), style: AppText.sub),
+                        Text(
+                          context.tr('ID {id}...', {'id': p.nationalId.substring(0, 4)}),
+                          style: AppText.sub,
+                        ),
                       ],
                     ),
                   ),

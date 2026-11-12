@@ -1,14 +1,15 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import '../service/localization_service.dart';
 import '../model/date_format.dart';
-import '../service/auth_service.dart';
-import '../service/settings_service.dart';
 import '../model/sync_status.dart';
+import '../service/auth_service.dart';
+import '../service/localization_service.dart';
+import '../service/settings_service.dart';
 import '../widgets/app_button.dart';
 import '../widgets/app_theme.dart';
 import '../widgets/info_card.dart';
+import '../widgets/language_pills.dart';
 import '../widgets/pill.dart';
 import '../widgets/screen_scaffold.dart';
 import 'app_router.dart';
@@ -34,29 +35,13 @@ class SettingsScreen extends StatelessWidget {
                   children: [
                     Text(context.tr('Language'), style: AppText.title),
                     SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Pill(
-                          text: 'العربية',
-                          selected: settings.isArabic,
-                          onTap: () => settings.setArabic(true),
-                        ),
-                        Pill(
-                          text: 'English',
-                          selected: !settings.isArabic,
-                          onTap: () => settings.setArabic(false),
-                        ),
-                      ],
-                    ),
+                    LanguagePills(),
                   ],
                 ),
               ),
               kGap,
               InfoCard(
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (_) => SyncStatesScreen()),
-                ),
+                onTap: () => pushScreen(context, SyncStatesScreen()),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -69,9 +54,10 @@ class SettingsScreen extends StatelessWidget {
                     ),
                     SizedBox(height: 6),
                     Text(
-                        context.tr('Last sync: {date}',
-                            {'date': formatDateTime(settings.lastSync, ar: context.isAr)}),
-                        style: AppText.sub),
+                      context.tr('Last sync: {date}',
+                          {'date': formatDateTime(settings.lastSync, ar: context.isAr)}),
+                      style: AppText.sub,
+                    ),
                   ],
                 ),
               ),
